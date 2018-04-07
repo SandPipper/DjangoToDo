@@ -1,0 +1,4 @@
+*.pyc
+# local environments
+./docker/environments
+venv/
