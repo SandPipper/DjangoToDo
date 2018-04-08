@@ -2,3 +2,4 @@
 # local environments
 ./docker/environments
 venv/
+node_modules/

@@ -27,7 +27,7 @@ const PRODUCTION = NODE_ENV === 'production';
 
 const HOST = process.env.HOST || '127.0.0.1';
 const PORT = process.env.PORT || '3000';
-const { ORIGIN } = require('./common.config');
+const ORIGIN = 'http://localhost:3000';
 
 //=======================================
 // LOADERS
@@ -92,7 +92,7 @@ const rules = {
 const config = {};
 
 config.entry = {
-    polyfills: ['babel-polyfill', './src/application/polyfills.js'],
+    polyfills: ['babel-polyfill'],
     main: ['./src/application/index.js'],
 };
 
@@ -147,7 +147,7 @@ config.plugins = [
     new DefinePlugin({
         'process.env': {
             NODE_ENV: JSON.stringify(NODE_ENV),
-            PUBLIC_URL: JSON.stringify(ORIGIN),
+            PUBLIC_URL: ORIGIN,
         },
     }),
     new OccurenceOrderPlugin(true),

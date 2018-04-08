@@ -41,6 +41,19 @@ services:
     env_file: './docker/environments'
     ports:
       - '8000:8000'
+  
+  todo_app_client:
+    image: node:latest
+    container_name: todo_app_client
+    hostname: todo_app_client
+    volumes:
+      - .:/DjangoToDo
+    command: "/bin/bash -c 'cd /DjangoToDo && npm install && npm start'"
+    ports:
+     - '3000:3000'
+    network_mode: 'host'
+    expose:
+     - '3000'
 
 volumes:
   todo_app_pg_data:
