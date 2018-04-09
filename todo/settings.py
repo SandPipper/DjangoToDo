@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '31gw$+tdt^3x&t8#+0jt#xu1h@9hzy3p=l3eu0kp@c_@hoivzk'
 
-#AUTH_USER_MODEL = 
+AUTH_USER_MODEL = 'api.ToDoUser'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG'))

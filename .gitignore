@@ -3,3 +3,4 @@
 ./docker/environments
 venv/
 node_modules/
+api/migrations
