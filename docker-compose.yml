@@ -4,7 +4,6 @@ services:
   nginx:
     image: nginx:latest
     container_name: todo_app_nginx
-    restart: always
     ports:
       - '8080:80'
     volumes_from:
@@ -38,7 +37,7 @@ services:
     restart: always
     volumes:
       - ./todo:/DjangoToDo/todo
-      - ./api:/DjangoToDo/api
+      - ./todo_api:/DjangoToDo/todo_api
       - ./static:/DjangoToDo/static
     env_file: './docker/environments'
     ports:
@@ -48,7 +47,6 @@ services:
     image: node:latest
     container_name: todo_app_client
     hostname: todo_app_client
-    restart: always
     volumes:
       - .:/DjangoToDo
     command: "/bin/bash -c 'cd /DjangoToDo && npm install && npm start'"

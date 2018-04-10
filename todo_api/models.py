@@ -13,7 +13,7 @@ from rest_framework.authtoken.models import Token
 class ToDoUserManager(BaseUserManager):
     def create_user(self, username):
         if not username:
-            raise ValueError('Users must hava an username')
+            raise ValueError('Users must have an username')
         user = self.model(
             username=username,
         )
@@ -44,9 +44,13 @@ class ToDoUser(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
 
     date_created = models.DateTimeField(default=timezone.now)
+    last_seen = models.DateTimeField()
 
     USERNAME_FIELD = 'username'
     objects = ToDoUserManager()
+
+    def get_todos(self):
+        return self.todos
 
     def __str__(self):
         return f'<{self.username}, {self.email}, {self.date_created}>'
@@ -62,11 +66,11 @@ class ToDo(models.Model):
     TYPES = (
         ('Started', 'Started'),
         ('Not Started', 'Not Started'),
-        ('Enden', 'Ended'),
+        ('Ended', 'Ended'),
     )
 
     title = models.CharField(max_length=300)
-    status = models.CharField(max_length=30)
+    status = models.CharField(max_length=30, choices=TYPES)
 
     data_created = models.DateTimeField(default=timezone.now)
     data_start = models.DateTimeField()
@@ -76,6 +80,5 @@ class ToDo(models.Model):
                              related_name='todos',
                              on_delete='cascade')
     
-
-
-    
+    def __str__(self):
+        return f'<{self.title}, {self.status}, {self.user.username}>'

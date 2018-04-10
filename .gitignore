@@ -1,6 +1,7 @@
 *.pyc
 # local environments
-./docker/environments
+docker/environments
 venv/
 node_modules/
-api/migrations
+todo_api/migrations
+.vscode

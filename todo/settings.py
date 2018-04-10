@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '31gw$+tdt^3x&t8#+0jt#xu1h@9hzy3p=l3eu0kp@c_@hoivzk'
 
-AUTH_USER_MODEL = 'api.ToDoUser'
+AUTH_USER_MODEL = 'todo_api.ToDoUser'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG'))
@@ -41,9 +41,23 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'rest_framework.authtoken',
 
-    'api',
+    'todo_api',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.isAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'COERCE_DECIMAL_TO_STRING': False
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
