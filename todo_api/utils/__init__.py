@@ -6,6 +6,6 @@ def get_or_none(model, **kwargs):
     :return:
     '''
     try:
-      return model.objects.get(**kwargs)
+        return model.objects.get(**kwargs)
     except model.DoesNotExist:
-      return
+        return
