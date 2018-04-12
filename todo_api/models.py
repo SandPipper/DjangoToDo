@@ -44,7 +44,6 @@ class ToDoUser(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
 
     date_created = models.DateTimeField(default=timezone.now)
-    last_seen = models.DateTimeField()
 
     USERNAME_FIELD = 'username'
     objects = ToDoUserManager()
@@ -72,13 +71,13 @@ class ToDo(models.Model):
     title = models.CharField(max_length=300)
     status = models.CharField(max_length=30, choices=TYPES)
 
-    data_created = models.DateTimeField(default=timezone.now)
-    data_start = models.DateTimeField()
-    data_end = models.DateTimeField()
+    date_created = models.DateTimeField(default=timezone.now)
+    date_start = models.DateTimeField()
+    date_end = models.DateTimeField()
 
     user = models.ForeignKey(ToDoUser,
                              related_name='todos',
-                             on_delete='cascade')
+                             on_delete=models.CASCADE)
     
     def __str__(self):
         return f'<{self.title}, {self.status}, {self.user.username}>'

@@ -5,7 +5,7 @@ DB_PASS=todoapppass
 DB_NAME=todoapp
 PG_TRUST_LOCALNET=true
 
-DB_HOST=localhost
+DB_HOST=todo_app_pg
 DB_PORT=5432
 
 DEBUG=1

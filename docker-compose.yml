@@ -34,7 +34,6 @@ services:
     build: ./
     container_name: todo_app_api
     hostname: todo_app_api
-    restart: always
     volumes:
       - ./todo:/DjangoToDo/todo
       - ./todo_api:/DjangoToDo/todo_api
