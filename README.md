@@ -13,12 +13,12 @@ Configure docker build
 
 `cp docker/environments.example docker/environments`
 
-For provide makemigration
+For provide makemigrations
 ============================
-`sudo docker-compose up -d todo_app_pg && sudo docker-compose run todo_app_api python manage.py makemigrations NAME`
+`docker-compose up -d todo_app_pg && docker-compose run todo_app_api python manage.py makemigrations`
 
 Run containers
 ==============
 `docker-compose up` 
 or
-`sudo docker-compose up -d todo_app_pg && sleep 2 && sudo docker-compose up`
+`docker-compose up -d todo_app_pg && sleep 2 && docker-compose up`

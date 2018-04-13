@@ -33,7 +33,7 @@ class UserRegistration(APIView):
             },
                 status=status.HTTP_406_NOT_ACCEPTABLE
             )
-        
+        #TODO create decorator for try/except bloc
         try:
             user = ToDoUser.objects.create(
                 username=username,
@@ -110,6 +110,7 @@ class UserToDo(APIView):
         date_start = request.data.get('data_start')
         date_end = request.data.get('data_end')
         user = request.user
+        #TODO create decorator for try/except bloc
         try:
             todo = ToDo.objects.create(
                 title=title,
@@ -137,9 +138,9 @@ class UserToDo(APIView):
         id = request.gata.get('id')
         title = request.data.get('title')
         status = request.data.get('status')
-        date_start = request.data.get('data_start')
-        date_end = request.data.get('data_end')
-
+        date_start = request.data.get('date_start')
+        date_end = request.data.get('date_end')
+        #TODO create decorator for try/except bloc
         try:
             todo = Todo.objects.get(id=id).update(
                 title=title, 
@@ -164,6 +165,7 @@ class UserToDo(APIView):
     
     def delete(self, request, **kwargs):
         id = request.data.get('id')
+        #TODO create decorator for try/except bloc
         try:
             ToDo.objects.get(id=id).delete()
         except Exception as e:

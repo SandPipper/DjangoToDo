@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = ToDoUser
         fields = (
             'username', 'email', 'data_created',
-            'last_seen', 'auth_token', 'id', 'todos'
+            'last_login', 'auth_token', 'id', 'todos'
         )
 
 
