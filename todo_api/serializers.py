@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDoUser
         fields = (
-            'username', 'email', 'data_created',
+            'username', 'email', 'date_created',
             'last_login', 'auth_token', 'id', 'todos'
         )
 

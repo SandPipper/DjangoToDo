@@ -3,10 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import render
 from django.core.exceptions import ValidationError
 from .models import ToDoUser, ToDo
-from .utils import get_or_none
+from .utils import get_or_none, validation_handler
 from .serializers import UserSerializer, ToDoSerializer
 
 
@@ -14,41 +13,28 @@ class UserRegistration(APIView):
     #TODO need add permission only for non login user
     permission_classes = (AllowAny, )
 
+    @validation_handler
     def post(self, request, **kwargs):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
+        #TODO add email confirmation
+        #TODO add password restore by email
 
-        if get_or_none(ToDoUser, username):
+        if not password:
             return Response({
-                'message': 'Username already in use',
-                'type': 'occupied_username',
+                'message': 'Password requried',
+                'type': 'password_required',
             },
-                status=status.HTTP_406_NOT_ACCEPTABLE
+            status=status.HTTP_406_NOT_ACCEPTABLE
             )
-        if get_or_none(ToDoUser, email):
-            return Response({
-                'message': 'Email already in use',
-                'type': 'occupied_email',
-            },
-                status=status.HTTP_406_NOT_ACCEPTABLE
-            )
-        #TODO create decorator for try/except bloc
-        try:
-            user = ToDoUser.objects.create(
-                username=username,
-                email=email
-            )
-            user.set_password(password)
-            user.save()
-        except ValidationError as e:
-            #TODO check this and add custom validators from django.core.validators
-            return Response({
-                'message': f'{e.error_dict}',
-                'type': 'validation_failed',
-            },
-                status=status.HTTP_406_NOT_ACCEPTABLE
-            )
+
+        user = ToDoUser.objects.create(
+            username=username,
+            email=email
+        )
+        user.set_password(password)
+        user.save()
 
         user = UserSerializer(instance=user).data
 
@@ -65,7 +51,7 @@ class UserLogin(APIView):
         #TODO need add login by username and email
         username = request.data.get('username')
         password = request.data.get('password')
-        user = get_or_none(ToDoUser, username)
+        user = get_or_none(ToDoUser, username=username)
 
         if user and user.check_password(password):
             user = UserSerializer(instance=user).data
@@ -74,7 +60,7 @@ class UserLogin(APIView):
             )
 
         return Response({
-            'message': 'Incorrect field',
+            'message': 'Invalid username or password field',
             'type': 'incorrect_field',
         },
             status=status.HTTP_406_NOT_ACCEPTABLE
@@ -97,84 +83,63 @@ class UserToDo(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
+    @validation_handler
     def get(self, request, **kwargs):
         todos = ToDo.objects.filter('user'==request.user)
         todos = ToDoSerializer(instance=todos, many=True).data
         return Response(
             data=todos
         )
-    
+
+    @validation_handler
     def post(self, request, **kwargs):
         title = request.data.get('title')
         status = request.data.get('status')
         date_start = request.data.get('data_start')
         date_end = request.data.get('data_end')
         user = request.user
-        #TODO create decorator for try/except bloc
-        try:
-            todo = ToDo.objects.create(
-                title=title,
-                status=status,
-                date_start=date_start,
-                date_end=date_end,
-                user=user,
-            )
-            todo.save()
-        except ValidationError as e:
-            #TODO check this and add custom validators from django.core.validators
-            return Response({
-                'message': f'{e.error_dict}',
-                'type': 'validation_failed',
-            },
-                status=status.HTTP_406_NOT_ACCEPTABLE
-            )
+
+        todo = ToDo.objects.create(
+            title=title,
+            status=status,
+            date_start=date_start,
+            date_end=date_end,
+            user=user,
+        )
+        todo.save()
 
         todo = ToDoSerializer(instance=todo).data
         return Response(
             data=todo
         )
-    
+
+    @validation_handler
     def put(self, request, **kwargs):
         id = request.gata.get('id')
         title = request.data.get('title')
         status = request.data.get('status')
         date_start = request.data.get('date_start')
         date_end = request.data.get('date_end')
-        #TODO create decorator for try/except bloc
-        try:
-            todo = Todo.objects.get(id=id).update(
-                title=title, 
-                status=status, 
-                date_start=date_start, 
-                date_end=date_end
-            )
-        except ValidationError as e:
-            #TODO check this and add custom validators from django.core.validators
-            return Response({
-                'message': f'{e.error_dict}',
-                'type': 'validation_failed',
-            },
-                status=status.HTTP_406_NOT_ACCEPTABLE
-            )
+
+        todo = Todo.objects.get(id=id).update(
+            title=title, 
+            status=status, 
+            date_start=date_start, 
+            date_end=date_end
+        )
 
         todo = ToDoSerializer(instance=todo).data
 
         return Response(
-            data=data
+            data=todo
         )
-    
+        
+    @validation_handler
     def delete(self, request, **kwargs):
         id = request.data.get('id')
-        #TODO create decorator for try/except bloc
-        try:
-            ToDo.objects.get(id=id).delete()
-        except Exception as e:
-            return Response({
-                'message': f'{e.error_dict}',
-                'type': 'wrong_id',
-            },
-                status=status.HTTP_406_NOT_ACCEPTABLE
-            )
+
+        ToDo.objects.get(id=id).delete()
+
         return Response({
             'message': 'delete',
             'type': 'success',

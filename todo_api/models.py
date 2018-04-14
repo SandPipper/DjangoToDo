@@ -7,6 +7,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.utils import timezone
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
 
 
@@ -50,6 +52,12 @@ class ToDoUser(AbstractBaseUser, PermissionsMixin):
 
     def get_todos(self):
         return self.todos
+    
+    def save(self, *args, **kwargs):
+        validate_email(self.email)
+        if not self.username:
+            raise ValidationError('Username is required')
+        super(ToDoUser, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'<{self.username}, {self.email}, {self.date_created}>'
