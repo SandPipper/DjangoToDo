@@ -19,7 +19,7 @@ function router(route) {
 function handle_index() {
   const url = baseUrl + '/auth/';
   const loginUrl = url + 'login/';
-  
+
   const content = `
     <br />
     <div class='form-container'>
@@ -48,29 +48,39 @@ function handle_index() {
 
 function handle_todo() {
   const url = baseUrl + '/todo/';
+  let todos = [];
   const  content = `
     <button id='logout'>Logout</button>
     <br />
     <div class='todos-container'>
       <h1>Simple ToDo form</h1>
       <form id='form-todo' method='POST' action="${url}" >
-        <input id='input-title name='title' type='text' placeholder='write your todo' required >
+        <input id='input-title' name='title' type='text' placeholder='write your todo' required >
         <button type='submit'>Submit</button>
         <input type='hidden' name='csrfmiddlewaretoken' value='${getCookie("csrftoken")}'>
       </form>
+      <br />
+      <div id='todos'>${todos}</div>
     </div>
   `;
-  $('#root').html(content);
-  console.log('start')
   $.ajax({
     type: 'GET',
     url: url,
-    //TODO handle with authorization permissions
-    //data: `Authorization: Token ${sessionStorage.getItem('auth_token')}`,
+    headers: {
+        'Authorization': `Token ${sessionStorage.getItem('auth_token').trim()}`
+    },
     success: function(data) {
-      console.log(data);
+      data.forEach(function(todo) {
+          var todo = `
+            <div class='todo'>
+                <h3>${todo.title}</h3>
+            </div>
+          `;
+          todos.append(todo);
+      });
     }
-  })
+    });
+    $('#root').html(content);
 };
 
 $(function() {
@@ -117,6 +127,25 @@ $(function() {
   $(document).on('click','#logout', function(e) {
     sessionStorage.removeItem('auth_token');
     router('logout');
+  });
+
+  $(document).on('submit', '#form-todo', function(e) {
+      e.preventDefault();
+      $.ajax({
+          type: $(this).attr('method'),
+          url: $(this).attr('action'),
+          data: $(this).serialize(),
+          dataType: 'JSON',
+          headers: {
+              'Authorization': `Token ${sessionStorage.getItem('auth_token').trim()}`
+          },
+          success: function(data) {
+              $(this)[0].reset();
+              $('#todos').append(data);
+          },
+      });
+
+
   });
 
 });

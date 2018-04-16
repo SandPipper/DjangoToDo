@@ -30,6 +30,8 @@ def validation_handler(func):
             )
         except IntegrityError as e:
             #TODO find a better way
+            print('====test===')
+            print(e)
             # field = str(e).split('.')[-1]
             field = str(e.__context__).split('(')[1][:-2]
             return Response({

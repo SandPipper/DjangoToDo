@@ -34,6 +34,7 @@ class UserRegistration(APIView):
             email=email
         )
         user.set_password(password)
+        user.is_active = True
         user.save()
 
         user = UserSerializer(instance=user).data
@@ -85,7 +86,7 @@ class UserToDo(APIView):
 
     @validation_handler
     def get(self, request, **kwargs):
-        todos = ToDo.objects.filter('user'==request.user)
+        todos = ToDo.objects.filter(user=request.user)
         todos = ToDoSerializer(instance=todos, many=True).data
         return Response(
             data=todos
@@ -122,9 +123,9 @@ class UserToDo(APIView):
         date_end = request.data.get('date_end')
 
         todo = Todo.objects.get(id=id).update(
-            title=title, 
-            status=status, 
-            date_start=date_start, 
+            title=title,
+            status=status,
+            date_start=date_start,
             date_end=date_end
         )
 
@@ -133,7 +134,7 @@ class UserToDo(APIView):
         return Response(
             data=todo
         )
-        
+
     @validation_handler
     def delete(self, request, **kwargs):
         id = request.data.get('id')
