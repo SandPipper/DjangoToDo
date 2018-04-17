@@ -1,3 +1,4 @@
+// const moment = require('moment');
 const getCookie = require('./helpers/getCokie').getCookie;
 const baseUrl = 'http://' + $(location).attr('hostname') + ':8000';
 const csrftoken = getCookie('csrftoken');
@@ -55,7 +56,8 @@ function handle_todo() {
     <div class='todos-container'>
       <h1>Simple ToDo form</h1>
       <form id='form-todo' method='POST' action="${url}" >
-        <input id='input-title' name='title' type='text' placeholder='write your todo' required >
+        <input id='input-title name='title' type='text' placeholder='write your todo' required >
+        <input id='daterangepicker' type='text'>
         <button type='submit'>Submit</button>
         <input type='hidden' name='csrfmiddlewaretoken' value='${getCookie("csrftoken")}'>
       </form>
@@ -127,6 +129,10 @@ $(function() {
   $(document).on('click','#logout', function(e) {
     sessionStorage.removeItem('auth_token');
     router('logout');
+  });
+
+  $(document).on('click', '#daterangepicker', function(e) {
+    $('#daterangepicker').dateRangePicker();
   });
 
   $(document).on('submit', '#form-todo', function(e) {
