@@ -8,16 +8,18 @@ const common = require('./webpack.common.js');
 
 module.exports = merge.strategy({
   entry: 'prepend',
-},)(common, {
+})(common, {
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
   ],
   devtool: 'inline-source-map',
   devServer: {
+    port: 3000,
     historyApiFallback: true,
     hot: true,
-    contentBase: path.resolve(__dirname, 'assets'),
+    headers: { "Access-Control-Allow-Origin": "*" },
+    contentBase: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     overlay: {
       warnings: true,
