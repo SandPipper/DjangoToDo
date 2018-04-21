@@ -85,14 +85,15 @@ class UserToDo(APIView):
     def post(self, request, **kwargs):
         title = request.data.get('title')
         status = request.data.get('status')
-        date_start, date_end = request.data.get('date_range').split(' - ')
+        date_start = request.data.get('date_start')
+        date_end = request.data.get('date_end')
         user = request.user
 
         todo = ToDo.objects.create(
             title=title,
             status=status,
-            date_start=datetime.strptime(date_start, '%m/%d/%Y').date(),
-            date_end=datetime.strptime(date_start, '%m/%d/%Y').date(),
+            date_start=date_start, # datetime.strptime(date_start, '%m/%d/%Y').date(),
+            date_end=date_end, # datetime.strptime(date_start, '%m/%d/%Y').date(),
             user=user,
         )
         todo.save()
