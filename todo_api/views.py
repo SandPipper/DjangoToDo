@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -6,42 +7,30 @@ from rest_framework import status
 from django.core.exceptions import ValidationError
 from .models import ToDoUser, ToDo
 from .utils import get_or_none, validation_handler
-from .serializers import UserSerializer, ToDoSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, ToDoSerializer
 
 
 class UserRegistration(APIView):
     #TODO need add permission only for non login user
     permission_classes = (AllowAny, )
-
-    @validation_handler
     def post(self, request, **kwargs):
-        username = request.data.get('username')
-        email = request.data.get('email')
-        password = request.data.get('password')
         #TODO add email confirmation
         #TODO add password restore by email
-
-        if not password:
-            return Response({
-                'message': 'Password requried',
-                'type': 'password_required',
-            },
-            status=status.HTTP_406_NOT_ACCEPTABLE
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            user = UserSerializer(
+                instance=ToDoUser.objects.get(
+                    username=request.data.get('username')
+                )
             )
-
-        user = ToDoUser.objects.create(
-            username=username,
-            email=email
-        )
-        user.set_password(password)
-        user.is_active = True
-        user.save()
-
-        user = UserSerializer(instance=user).data
-
-        return Response(
-            data=user
-        )
+            return Response(
+                data=user.data
+            )
+        else:
+            return Response(
+                data=serializer.errors
+            )
 
 
 class UserLogin(APIView):
@@ -96,20 +85,20 @@ class UserToDo(APIView):
     def post(self, request, **kwargs):
         title = request.data.get('title')
         status = request.data.get('status')
-        date_start = request.data.get('data_start')
-        date_end = request.data.get('data_end')
+        date_start, date_end = request.data.get('date_range').split(' - ')
         user = request.user
 
         todo = ToDo.objects.create(
             title=title,
             status=status,
-            date_start=date_start,
-            date_end=date_end,
+            date_start=datetime.strptime(date_start, '%m/%d/%Y').date(),
+            date_end=datetime.strptime(date_start, '%m/%d/%Y').date(),
             user=user,
         )
         todo.save()
 
-        todo = ToDoSerializer(instance=todo).data
+        todo = ToDoSerializer(instance=todo)
+
         return Response(
             data=todo
         )

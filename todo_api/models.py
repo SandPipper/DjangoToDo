@@ -52,12 +52,6 @@ class ToDoUser(AbstractBaseUser, PermissionsMixin):
 
     def get_todos(self):
         return self.todos
-    
-    def save(self, *args, **kwargs):
-        validate_email(self.email)
-        if not self.username:
-            raise ValidationError('Username is required')
-        super(ToDoUser, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'<{self.username}, {self.email}, {self.date_created}>'
@@ -86,6 +80,17 @@ class ToDo(models.Model):
     user = models.ForeignKey(ToDoUser,
                              related_name='todos',
                              on_delete=models.CASCADE)
+    
+    def save(self, *args, **kwargs):
+        if not self.date_start:
+            raise ValidationError('Date start is required')
+        if not self.date_end:
+            raise ValidationError('Date end is required') 
+        if not self.status:
+            raise ValidationError('Status is required')
+        if not self.title:
+            raise ValidationError('Title is required')
+        super(ToDo, self).save(*args, **kwargs)
     
     def __str__(self):
         return f'<{self.title}, {self.status}, {self.user.username}>'
