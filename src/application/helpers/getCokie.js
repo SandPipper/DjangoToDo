@@ -1,4 +1,4 @@
-module.exports.getCookie = function(name) {
+export default function(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
       var cookies = document.cookie.split(';');

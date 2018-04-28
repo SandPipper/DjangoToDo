@@ -28,8 +28,11 @@ class UserRegistration(APIView):
                 data=user.data
             )
         else:
-            return Response(
-                data=serializer.errors
+            return Response({
+                'message': serializer.errors,
+                'type': 'incorrect_field',
+            },
+                status=status.HTTP_406_NOT_ACCEPTABLE
             )
 
 
@@ -73,35 +76,51 @@ class UserToDo(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
-    @validation_handler
+    #@validation_handler
     def get(self, request, **kwargs):
         todos = ToDo.objects.filter(user=request.user)
-        todos = ToDoSerializer(instance=todos, many=True).data
+        todos = ToDoSerializer(instance=todos, many=True)
         return Response(
-            data=todos
+            data=todos.data
         )
 
-    @validation_handler
+    # @validation_handler
     def post(self, request, **kwargs):
-        title = request.data.get('title')
-        status = request.data.get('status')
-        date_start = request.data.get('date_start')
-        date_end = request.data.get('date_end')
-        user = request.user
+        # use serializer instead
+        # title = request.data.get('title')
+        # status = request.data.get('status')
+        # date_start = request.data.get('date_start')
+        # date_end = request.data.get('date_end')
 
-        todo = ToDo.objects.create(
-            title=title,
-            status=status,
-            date_start=date_start, # datetime.strptime(date_start, '%m/%d/%Y').date(),
-            date_end=date_end, # datetime.strptime(date_start, '%m/%d/%Y').date(),
-            user=user,
-        )
-        todo.save()
+        # user = request.user
 
-        todo = ToDoSerializer(instance=todo)
+        # todo = ToDo.objects.create(
+        #     title=title,
+        #     status=status,
+        #     date_start=datetime.strptime(date_start, '%m/%d/%Y').date(),
+        #     date_end=datetime.strptime(date_start, '%m/%d/%Y').date(),
+        #     user=user,
+        # )
+        # todo.save()
 
-        return Response(
-            data=todo
+        # todo = ToDoSerializer(instance=todo)
+
+        # return Response(
+        #     data=todo
+        # )
+
+        serializer = ToDoSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            serializer = ToDoSerializer(instance=ToDo.objects.filter(user=request.user), many=True)
+            return Response(
+            data=serializer.data
+            )
+        return Response({
+            'message': serializer.errors,
+            'type': 'incorrect_field',
+        },
+            status=status.HTTP_406_NOT_ACCEPTABLE
         )
 
     @validation_handler

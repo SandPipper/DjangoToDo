@@ -73,24 +73,23 @@ class ToDo(models.Model):
     title = models.CharField(max_length=300)
     status = models.CharField(max_length=30, choices=TYPES)
 
-    date_created = models.DateTimeField(default=timezone.now)
-    date_start = models.DateTimeField()
-    date_end = models.DateTimeField()
+    date_created = models.DateField(default=timezone.now)
+    date_start = models.DateField()
+    date_end = models.DateField()
 
     user = models.ForeignKey(ToDoUser,
                              related_name='todos',
                              on_delete=models.CASCADE)
-    
-    def save(self, *args, **kwargs):
-        if not self.date_start:
-            raise ValidationError('Date start is required')
-        if not self.date_end:
-            raise ValidationError('Date end is required') 
-        if not self.status:
-            raise ValidationError('Status is required')
-        if not self.title:
-            raise ValidationError('Title is required')
-        super(ToDo, self).save(*args, **kwargs)
+
+    # Relocate validation to serializer
+    # def save(self, *args, **kwargs):
+    #     if not self.date_start:
+    #         raise ValidationError('Date start is required')
+    #     if not self.date_end:
+    #         raise ValidationError('Date end is required') 
+    #     if not self.title:
+    #         raise ValidationError('Title is required')
+    #     super(ToDo, self).save(*args, **kwargs)
     
     def __str__(self):
         return f'<{self.title}, {self.status}, {self.user.username}>'

@@ -1,0 +1,50 @@
+#form-container {
+  padding: 50px;
+  display: flex;
+}
+
+#login-container {
+  padding: 25px 50px;
+
+  h1 {
+    margin-left: 48px;
+  }
+
+  #login-errors {
+    padding: 30px 74px;
+  }
+}
+
+#registration-errors {
+  padding: 30px 74px;
+}
+
+#form-registartation, #form-login, #form-todo {
+  border: 2px solid black;
+  border-top: none;
+  border-bottom: none;
+  border-radius: 10px;
+  padding: 20px;
+  margin-left: 50px;
+  max-width: 300px;
+
+  input {
+    padding: 10px;
+    margin: 10px;
+    width: 80%;
+    border-radius: 10px;
+  }
+
+  button {
+    float: right;
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+}
+
+.todos-container {
+  h1 {
+    margin-left: 60px;
+  }
+}

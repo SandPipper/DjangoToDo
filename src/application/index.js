@@ -1,4 +1,4 @@
-// require('daterangepicker');
+import '../assets/sass/style.scss';
 import 'daterangepicker';
 import { router } from './router';
 
@@ -20,6 +20,9 @@ $(function() {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         dataType: 'JSON',
+        error: function(error) {
+          $('#registration-errors').empty().append(JSON.stringify(error.responseJSON.message)).show();
+        },
         success: function(data) {
           if (data.username)  {
             localStorage.setItem('auth_token', data.auth_token);
@@ -37,6 +40,9 @@ $(function() {
       url: $(this).attr('action'),
       data: $(this).serialize(),
       dataType: 'JSON',
+      error: function(error) {
+        $('#login-errors').empty().append(error.responseJSON.message).show();
+      },
       success: function(data) {
         if (data.username) {
           localStorage.setItem('auth_token', data.auth_token);
@@ -51,24 +57,41 @@ $(function() {
     router('logout');
   });
 
-  $(function() {
-    $('#daterangepicker').daterangepicker();
-  });
-
   $(document).on('submit', '#form-todo', function(e) {
       e.preventDefault();
-      console.log($(this).serialize());
+      const this_form = this;
+      const formData = $(this).serializeArray();
+      const date = formData[1].value.split(' - ');
+      const data = {
+        csrfmiddlewaretoken: formData[2].value,
+        title: formData[0].value,
+        date_start: date[0],
+        date_end: date[1],
+      };
       $.ajax({
           type: $(this).attr('method'),
           url: $(this).attr('action'),
-          data: $(this).serialize(),
+          data: data,
           dataType: 'JSON',
           headers: {
-              'Authorization': `Token ${sessionStorage.getItem('auth_token')}`
+              'Authorization': `Token ${localStorage.getItem('auth_token')}`
+          },
+          error: function(error) {
+            $('#todo-errors').empty().append(JSON.stringify(error.responseJSON.message)).show();
           },
           success: function(data) {
-              $(this)[0].reset();
-              $('#todos').append(data);
+
+              $(this_form)[0].reset();
+
+              const data_content = data.reduce((acc, content) => {
+                acc += `
+                <div class='todo'>
+                    <h3>${content.title}</h3>
+                </div>
+                `;
+                return acc;
+              }, '');
+              $('#todos').empty().append(data_content);
           },
       });
 
