@@ -1,11 +1,10 @@
 import '../assets/sass/style.scss';
 import 'daterangepicker';
-import { router } from './router';
+import router from './router';
+import todoRepr from './helpers/todoRepr';
+import handleErrors from './helpers/handleErrors';
 
 $(function() {
-  // $.ajax({
-
-  // })
   if (localStorage.auth_token) {
     router('todo');
   } else {
@@ -14,6 +13,7 @@ $(function() {
 
   $(document).on('submit', '#form-registartation', function(e) {
     e.preventDefault();
+    const this_form = this;
 
     $.ajax({
         type: $(this).attr('method'),
@@ -21,7 +21,7 @@ $(function() {
         data: $(this).serialize(),
         dataType: 'JSON',
         error: function(error) {
-          $('#registration-errors').empty().append(JSON.stringify(error.responseJSON.message)).show();
+          handleErrors(this_form, error.responseJSON.message);
         },
         success: function(data) {
           if (data.username)  {
@@ -34,6 +34,7 @@ $(function() {
 
   $(document).on('submit', '#form-login', function(e) {
     e.preventDefault();
+    const this_form = this;
 
     $.ajax({
       type: $(this).attr('method'),
@@ -41,7 +42,7 @@ $(function() {
       data: $(this).serialize(),
       dataType: 'JSON',
       error: function(error) {
-        $('#login-errors').empty().append(error.responseJSON.message).show();
+        handleErrors(this_form, error.responseJSON.message);
       },
       success: function(data) {
         if (data.username) {
@@ -77,20 +78,20 @@ $(function() {
               'Authorization': `Token ${localStorage.getItem('auth_token')}`
           },
           error: function(error) {
-            $('#todo-errors').empty().append(JSON.stringify(error.responseJSON.message)).show();
+            handleErrors(this_form, error.responseJSON.message);
           },
           success: function(data) {
 
               $(this_form)[0].reset();
+              $(`#form-todo input`).each(function(){
+                $(this).css({ borderColor: '#f2f2f2', color: 'grey' });
+              });
+              $('#todo-errors').html('');
 
-              const data_content = data.reduce((acc, content) => {
-                acc += `
-                <div class='todo'>
-                    <h3>${content.title}</h3>
-                </div>
-                `;
-                return acc;
-              }, '');
+
+              $('#todo-errors').hide()
+
+              const data_content = todoRepr(data);
               $('#todos').empty().append(data_content);
           },
       });

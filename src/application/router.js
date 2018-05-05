@@ -1,6 +1,6 @@
 import { handle_index, handle_todo } from './routes';
 
-export function router(route) {
+export default function router(route) {
   switch(route) {
     case 'auth':
       handle_index();

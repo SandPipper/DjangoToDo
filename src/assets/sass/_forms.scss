@@ -15,11 +15,11 @@
   }
 }
 
-#registration-errors {
-  padding: 30px 74px;
+#registration-errors, #todo-errors {
+  padding: 30px 64px;
 }
 
-#form-registartation, #form-login, #form-todo {
+#form-registartation, #form-login, #form-todo, .todo {
   border: 2px solid black;
   border-top: none;
   border-bottom: none;

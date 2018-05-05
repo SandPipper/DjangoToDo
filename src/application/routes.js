@@ -1,4 +1,6 @@
 import getCookie from './helpers/getCokie';
+import todoRepr from './helpers/todoRepr';
+import router from './router';
 import 'daterangepicker';
 const baseUrl = 'http://' + $(location).attr('hostname') + ':8000';
 const csrftoken = getCookie('csrftoken');
@@ -14,7 +16,7 @@ export function handle_index() {
     <div id='form-container'>
     <div id='registration-container'>
     <h1>Simple Registration Form</h1>
-      <form id='form-registartation' method='POST' action="${url}" >
+      <form id='form-registartation' method='POST' action="${url}" novalidate>
         <input class='input-username' name='username' type='text' placeholder='write your username'>
         <input class='input-email' name='email' type='email' placeholder='write your email'>
         <input class='input-password' name='password' type='password' placeholder='write your password'>
@@ -40,7 +42,7 @@ export function handle_index() {
 
 export function handle_todo() {
   const url = baseUrl + '/todo/';
-  let todos = [];
+  let todos = '';
   
 
   $.ajax({
@@ -49,16 +51,18 @@ export function handle_todo() {
     headers: {
         'Authorization': `Token ${localStorage.getItem('auth_token')}`
     },
+    error: function(err) {
+      switch(err.status) {
+        case 401:
+          router('logout');
+          break;
+        case 406:
+          console.log(err);
+          break;
+      }
+    },
     success: function(data) {
-      data.forEach(function(todo) {
-          todo = `
-            <div class='todo'>
-                <h3>${todo.title}</h3>
-            </div>
-          `;
-          todos.push(todo);
-      });
-      console.log(todos);
+      todos = todoRepr(data);
       const content = `
         <button id='logout'>Logout</button>
         <br />
@@ -72,7 +76,7 @@ export function handle_todo() {
           </form>
           <div id='todo-errors' hidden></div>
           <br />
-          <div id='todos'>${todos.join('')}</div>
+          <div id='todos'>${todos}</div>
         </div>
       `;
 

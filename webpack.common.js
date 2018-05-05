@@ -21,6 +21,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.scss'],
+    alias: {
+      'dist': path.resolve('dist')
+    }
   },
   module: {
     rules: [

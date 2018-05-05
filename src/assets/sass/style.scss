@@ -1,2 +1,9 @@
 @import 'forms';
 @import 'todos';
+
+input {
+  transition: background-color .5s ease-in-out;
+   -moz-transition: background-color .5s ease-in-out;
+   -webkit-transition: background-color .5s ease-in-out; 
+  -o-transition: background-color .5s ease-in-out; 
+}
