@@ -78,6 +78,7 @@ $(function() {
               'Authorization': `Token ${localStorage.getItem('auth_token')}`
           },
           error: function(error) {
+            console.log('error', error)
             handleErrors(this_form, error.responseJSON.message);
           },
           success: function(data) {
@@ -95,6 +96,34 @@ $(function() {
               $('#todos').empty().append(data_content);
           },
       });
+
+
+  });
+
+  $(document).on('click', '.todo_rm', function() {
+
+    const title = $(this).prevAll('h3');
+    const data = {
+      title: title.text(),
+    }
+    console.log('data', data)
+
+    $.ajax({
+      type: 'DELETE',
+      url: 'http://127.0.0.1:8000/todo/',
+      data: data,
+      // no needed
+      // dataTypes: 'JSON'
+      headers: {
+        'Authorization': `Token ${localStorage.getItem('auth_token')}`
+      },
+      error: function(error) {
+        console.log('rm_error', error);
+      },
+      success: function(data) {
+        title.parent().remove();
+      }
+    })
 
 
   });

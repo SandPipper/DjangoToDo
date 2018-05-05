@@ -6,6 +6,7 @@ export default data => data.reduce((acc, todo) => {
         <h5>Start date: ${todo.date_start}</h5>
         <h5>End date: ${todo.date_end}</h5>
       </div>
+      <button class='todo_rm' type='delete'>Remove</button>
   </div>
   `;
   return acc;

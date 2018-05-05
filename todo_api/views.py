@@ -146,9 +146,10 @@ class UserToDo(APIView):
 
     @validation_handler
     def delete(self, request, **kwargs):
-        id = request.data.get('id')
+        title = request.data.get('title')
+        print('title', title)
 
-        ToDo.objects.get(id=id).delete()
+        ToDo.objects.filter(title=title).all().delete()
 
         return Response({
             'message': 'delete',

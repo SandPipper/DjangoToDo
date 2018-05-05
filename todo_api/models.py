@@ -70,7 +70,7 @@ class ToDo(models.Model):
         ('Ended', 'Ended'),
     )
 
-    title = models.CharField(max_length=300)
+    title = models.CharField(max_length=300, unique=True)
     status = models.CharField(max_length=30, choices=TYPES)
 
     date_created = models.DateField(default=timezone.now)

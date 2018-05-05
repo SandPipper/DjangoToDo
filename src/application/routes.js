@@ -37,7 +37,7 @@ export function handle_index() {
     </div>
   </div>
   `;
-  $('#root').empty().html(content);
+  $('#root').html(content);
 };
 
 export function handle_todo() {
@@ -80,7 +80,7 @@ export function handle_todo() {
         </div>
       `;
 
-      $('#root').empty().html(content);
+      $('#root').html(content);
     
       $('#daterangepicker').daterangepicker({
         locale: {
@@ -90,4 +90,3 @@ export function handle_todo() {
     }
     });
 };
-

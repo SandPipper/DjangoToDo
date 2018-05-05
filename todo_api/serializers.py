@@ -66,7 +66,8 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     title = serializers.CharField(
         max_length=30,
-        min_length=3
+        min_length=3,
+        validators=[UniqueValidator(queryset=ToDo.objects.all())]
     )
 
     date_start = serializers.DateField()
