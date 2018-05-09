@@ -54,15 +54,27 @@ export function handle_todo() {
     error: function(err) {
       switch(err.status) {
         case 401:
-          router('logout');
+          router('/logout');
           break;
         case 406:
           console.log(err);
           break;
+        default:
+          console.log('err', err);
       }
     },
     success: function(data) {
       todos = todoRepr(data);
+      console.log('test_todos', todos);
+      
+      const categories = Object.keys(todos).map(category => `
+        <div class="categorie ${category.toLowerCase().replace(/' '/g, /'_'/)}">
+          <h3>${category}</h3>
+          <div class='todos'>${todos[category]}</div>
+        </div>
+      `);
+      
+      console.log('categories', categories);
       const content = `
         <button id='logout'>Logout</button>
         <br />
@@ -70,13 +82,13 @@ export function handle_todo() {
           <h1>Simple ToDo form</h1>
           <form id='form-todo' method='POST' action="${url}" >
             <input id='input-title' name='title' type='text' placeholder='write your todo'>
-            <input id='daterangepicker' name='date_range' type='text'>
+            <input id='daterangepicker' name='date_range' type='text' placeholder='Choice start and end date of todo'>
             <button type='submit'>Submit</button>
             <input type='hidden' name='csrfmiddlewaretoken' value='${getCookie("csrftoken")}'>
           </form>
           <div id='todo-errors' hidden></div>
           <br />
-          <div id='todos'>${todos}</div>
+          <div class='todos'>${categories.join('')}</div>
         </div>
       `;
 

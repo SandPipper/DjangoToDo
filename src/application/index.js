@@ -6,9 +6,9 @@ import handleErrors from './helpers/handleErrors';
 
 $(function() {
   if (localStorage.auth_token) {
-    router('todo');
+    router('/todo');
   } else {
-    router('auth');
+    router('/auth');
   };
 
   $(document).on('submit', '#form-registartation', function(e) {
@@ -19,14 +19,13 @@ $(function() {
         type: $(this).attr('method'),
         url: $(this).attr('action'),
         data: $(this).serialize(),
-        dataType: 'JSON',
         error: function(error) {
           handleErrors(this_form, error.responseJSON.message);
         },
         success: function(data) {
           if (data.username)  {
             localStorage.setItem('auth_token', data.auth_token);
-            router('todo');
+            router('/todo');
           }
         },
     });
@@ -40,14 +39,13 @@ $(function() {
       type: $(this).attr('method'),
       url: $(this).attr('action'),
       data: $(this).serialize(),
-      dataType: 'JSON',
       error: function(error) {
         handleErrors(this_form, error.responseJSON.message);
       },
       success: function(data) {
         if (data.username) {
           localStorage.setItem('auth_token', data.auth_token);
-          router('todo');
+          router('/todo');
         };
       }
     });
@@ -55,7 +53,7 @@ $(function() {
 
   $(document).on('click','#logout', function(e) {
     localStorage.removeItem('auth_token');
-    router('logout');
+    router('/logout');
   });
 
   $(document).on('submit', '#form-todo', function(e) {
@@ -73,7 +71,6 @@ $(function() {
           type: $(this).attr('method'),
           url: $(this).attr('action'),
           data: data,
-          dataType: 'JSON',
           headers: {
               'Authorization': `Token ${localStorage.getItem('auth_token')}`
           },
@@ -93,7 +90,7 @@ $(function() {
               $('#todo-errors').hide()
 
               const data_content = todoRepr(data);
-              $('#todos').empty().append(data_content);
+              $('#todos').html(data_content);
           },
       });
 
@@ -112,8 +109,6 @@ $(function() {
       type: 'DELETE',
       url: 'http://127.0.0.1:8000/todo/',
       data: data,
-      // no needed
-      // dataTypes: 'JSON'
       headers: {
         'Authorization': `Token ${localStorage.getItem('auth_token')}`
       },
@@ -124,8 +119,6 @@ $(function() {
         title.parent().remove();
       }
     })
-
-
   });
 
 });

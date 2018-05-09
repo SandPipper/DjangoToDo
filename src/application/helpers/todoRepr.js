@@ -1,5 +1,5 @@
 export default data => data.reduce((acc, todo) => {
-  acc += `
+  const todo_template = `
   <div class='todo'>
       <h3>${todo.title}</h3>
       <div class='todo-body'>
@@ -9,5 +9,8 @@ export default data => data.reduce((acc, todo) => {
       <button class='todo_rm' type='delete'>Remove</button>
   </div>
   `;
+  console.log(todo);
+  acc[todo.status] ? acc[todo.status] += todo_template : acc[todo.status] = todo_template;
+
   return acc;
-}, '');
+}, {});
