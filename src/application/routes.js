@@ -1,5 +1,6 @@
 import getCookie from './helpers/getCokie';
 import todoRepr from './helpers/todoRepr';
+import categorieRepr from './helpers/categorieRepr';
 import router from './router';
 import 'daterangepicker';
 const baseUrl = 'http://' + $(location).attr('hostname') + ':8000';
@@ -65,16 +66,7 @@ export function handle_todo() {
     },
     success: function(data) {
       todos = todoRepr(data);
-      console.log('test_todos', todos);
-      
-      const categories = Object.keys(todos).map(category => `
-        <div class="categorie ${category.toLowerCase().replace(/' '/g, /'_'/)}">
-          <h3>${category}</h3>
-          <div class='todos'>${todos[category]}</div>
-        </div>
-      `);
-      
-      console.log('categories', categories);
+      const categories = categorieRepr(todos);
       const content = `
         <button id='logout'>Logout</button>
         <br />

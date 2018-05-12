@@ -78,10 +78,10 @@ class ToDoSerializer(serializers.ModelSerializer):
 
     def get_status(self, obj):
         date_now = datetime.date(datetime.now())
-        if obj.date_start >= date_now and obj.date_end > date_now:
-            return ToDo.TYPES[0][0]
-        elif obj.date_start < date_now:
+        if obj.date_start > date_now:
             return ToDo.TYPES[1][0]
-        elif obj.date_end < date_now:
+        elif obj.date_start <= date_now and obj.date_end >= date_now:
+            return ToDo.TYPES[0][0]
+        else:
             return ToDo.TYPES[2][0]
 

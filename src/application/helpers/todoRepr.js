@@ -9,7 +9,7 @@ export default data => data.reduce((acc, todo) => {
       <button class='todo_rm' type='delete'>Remove</button>
   </div>
   `;
-  console.log(todo);
+  console.log('test_todo', todo);
   acc[todo.status] ? acc[todo.status] += todo_template : acc[todo.status] = todo_template;
 
   return acc;

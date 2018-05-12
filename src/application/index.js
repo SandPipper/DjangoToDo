@@ -2,6 +2,7 @@ import '../assets/sass/style.scss';
 import 'daterangepicker';
 import router from './router';
 import todoRepr from './helpers/todoRepr';
+import categorieRepr from './helpers/categorieRepr';
 import handleErrors from './helpers/handleErrors';
 
 $(function() {
@@ -86,11 +87,10 @@ $(function() {
               });
               $('#todo-errors').html('');
 
-
-              $('#todo-errors').hide()
-
               const data_content = todoRepr(data);
-              $('#todos').html(data_content);
+              const categories = categorieRepr(data_content);
+
+              $('.todos').html(categories);
           },
       });
 
