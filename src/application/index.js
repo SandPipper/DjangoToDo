@@ -4,13 +4,11 @@ import router from './router';
 import todoRepr from './helpers/todoRepr';
 import categorieRepr from './helpers/categorieRepr';
 import handleErrors from './helpers/handleErrors';
+import { baseAPIUrl, user } from './constants';
 
 $(function() {
-  if (localStorage.auth_token) {
-    router('/todo');
-  } else {
-    router('/auth');
-  };
+  console.log(window.location.pathname)
+  router(window.location.pathname);
 
   $(document).on('submit', '#form-registartation', function(e) {
     e.preventDefault();
@@ -21,12 +19,17 @@ $(function() {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         error: function(error) {
+          console.log('test_error', error);
           handleErrors(this_form, error.responseJSON.message);
         },
         success: function(data) {
           if (data.username)  {
-            localStorage.setItem('auth_token', data.auth_token);
-            router('/todo');
+            localStorage.setItem('user', JSON.stringify(data));
+            if (data.is_active) {
+              router('/todo');
+            } else {
+              router('/activate');
+            }
           }
         },
     });
@@ -45,15 +48,20 @@ $(function() {
       },
       success: function(data) {
         if (data.username) {
-          localStorage.setItem('auth_token', data.auth_token);
-          router('/todo');
+          console.log('test_data', data)
+          localStorage.setItem('user', JSON.stringify(data));
+          if (data.is_active) {
+            router('/todo');
+          } else {
+            router('/activate', data);
+          }
         };
       }
     });
   });
 
   $(document).on('click','#logout', function(e) {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
     router('/logout');
   });
 
@@ -73,7 +81,7 @@ $(function() {
           url: $(this).attr('action'),
           data: data,
           headers: {
-              'Authorization': `Token ${localStorage.getItem('auth_token')}`
+              'Authorization': `Token ${user.auth_token}`
           },
           error: function(error) {
             console.log('error', error)
@@ -103,14 +111,14 @@ $(function() {
     const data = {
       title: title.text(),
     }
-    console.log('data', data)
+    const url = baseAPIUrl + '/todo/';
 
     $.ajax({
       type: 'DELETE',
-      url: 'http://127.0.0.1:8000/todo/',
+      url: url,
       data: data,
       headers: {
-        'Authorization': `Token ${localStorage.getItem('auth_token')}`
+        'Authorization': `Token ${user.auth_token}`
       },
       error: function(error) {
         console.log('rm_error', error);
@@ -121,4 +129,26 @@ $(function() {
     })
   });
 
+});
+
+$(document).on('click', '#back-to-index', function() {
+  router();
+});
+
+$(document).on('click', '#resend-activation-email', function() {
+  const url = baseAPIUrl + '/activate-user/';
+  $.ajax({
+    type: 'GET',
+    url: url,
+    data: {
+      email: user.email,
+    },
+    error: function(error) {
+      console.log('resend-activ-email', error);
+      if (error.status === 401) return router();
+    },
+    success: function() {
+      return router();
+    }
+  })
 });

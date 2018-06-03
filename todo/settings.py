@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '31gw$+tdt^3x&t8#+0jt#xu1h@9hzy3p=l3eu0kp@c_@hoivzk'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 AUTH_USER_MODEL = 'todo_api.ToDoUser'
 
@@ -153,3 +153,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = 'static'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587

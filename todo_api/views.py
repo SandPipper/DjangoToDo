@@ -1,50 +1,76 @@
 from datetime import datetime
+
+from django.core.exceptions import ValidationError
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.core.exceptions import ValidationError
+
 from .models import ToDoUser, ToDo
-from .utils import get_or_none, validation_handler
 from .serializers import UserRegistrationSerializer, UserSerializer, ToDoSerializer
+from .tokens import account_activation_token
+from .utils import get_or_none, validation_handler, send_activation_email
 
 
 class UserRegistration(APIView):
     #TODO need add permission only for non login user
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     def post(self, request, **kwargs):
-        #TODO add email confirmation
         #TODO add password restore by email
-        serializer = UserRegistrationSerializer(data=request.data)
+        serializer = UserRegistrationSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            serializer.save()
-            user = UserSerializer(
-                instance=ToDoUser.objects.get(
-                    username=request.data.get('username')
-                )
-            )
+            serialized_user = serializer.save()
             return Response(
-                data=user.data
+                data=serialized_user
             )
-        else:
-            return Response({
-                'message': serializer.errors,
-                'type': 'incorrect_field',
-            },
-                status=status.HTTP_406_NOT_ACCEPTABLE
+        return Response({
+            'message': serializer.errors,
+            'type': 'incorrect_field',
+        },
+            status=status.HTTP_406_NOT_ACCEPTABLE
+        )
+
+
+class ActivateView(APIView):
+    permission_classes = (AllowAny,)
+    def get(self, request, **kwargs):
+        user = ToDoUser.objects.get(email=request.query_params['email'])
+        send_activation_email(user, request)
+        return Response(
+            status=200
+        )
+
+    def post(self, request, **kwargs):
+        try:
+            uid = force_text(urlsafe_base64_decode(request.data.get('uibd64')))
+            token = request.data.get('token')
+            user = ToDoUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, ToDoUser.DoesNotExist) as e:
+            print('errr!', e)
+            user = None
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            serializer = UserSerializer(instance=user).data
+            return Response(
+                data=serializer
             )
+        return Response(
+            status=401
+        )
 
 
 class UserLogin(APIView):
-    #TODO need add permission only for non login user
     permission_classes = (AllowAny,)
 
     def post(self, request, **kwargs):
-        #TODO need add login by username and email
         username = request.data.get('username')
         password = request.data.get('password')
-        user = get_or_none(ToDoUser, username=username)
+        user = get_or_none(ToDoUser, username=username) or get_or_none(ToDoUser, email=username)
 
         if user and user.check_password(password):
             user = UserSerializer(instance=user).data

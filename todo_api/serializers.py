@@ -3,13 +3,12 @@ from datetime import datetime
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-# from rest_framework.response import Response
 
 from .models import ToDoUser, ToDo
-from .utils import get_or_none
+from .utils import get_or_none, send_activation_email
 
 
-class UserRegistrationSerializer(serializers.ModelSerializer):
+class UserRegistrationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ToDoUser
@@ -30,15 +29,24 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         min_length=4
     )
 
+    # def __init__(self, request=None, *args, **kwargs):
+    #     super().__init__(self, *args, **kwargs)
+    #     self.request = request
+
     def create(self, validated_data):
         user = ToDoUser.objects.create(
             username=validated_data.get('username'),
             email=validated_data.get('email')
         )
         user.set_password(validated_data.get('password'))
-        user.is_active = True
+        
         user.save()
-        return user
+
+        request = self.context.get('request')
+        send_activation_email(user, request)
+
+        serialized_user = UserSerializer(instance=user).data
+        return serialized_user
 
 
 class UserSerializer(serializers.ModelSerializer):

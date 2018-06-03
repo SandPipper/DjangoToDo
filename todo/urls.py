@@ -23,4 +23,5 @@ urlpatterns = [
     path('auth/login/', views.UserLogin.as_view()),
     path('auth/logout/', views.UserLogout.as_view()),
     path('todo/', views.UserToDo.as_view()),
+    path('activate-user/', views.ActivateView.as_view())
 ]
