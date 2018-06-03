@@ -1,7 +1,8 @@
 import todoRepr from './helpers/todoRepr';
 import categorieRepr from './helpers/categorieRepr';
+import user from './helpers/getUser';
 import router from './router';
-import { baseAPIUrl, csrftoken , user } from './constants';
+import { baseAPIUrl, csrftoken } from './constants';
 import 'daterangepicker';
 
 const url = baseAPIUrl + '/auth/';
@@ -43,13 +44,12 @@ export function handle_index() {
 export function handle_todo() {
   const url = baseAPIUrl + '/todo/';
   let todos = '';
-  
-  console.log('test_user', user);
+
   $.ajax({
     type: 'GET',
     url: url,
     headers: {
-        'Authorization': `Token ${user.auth_token}`
+        'Authorization': `Token ${user().auth_token}`
     },
     error: function(err) {
       switch(err.status) {
@@ -96,10 +96,6 @@ export function handle_todo() {
 
 export function handle_activate(data, queryParams) {
   if (!$.isEmptyObject(queryParams)) {
-    console.log('test', queryParams);
-    
-    queryParams['uibd64'] = queryParams['uibd64'].replace(/b'/, '').replace("'", '');
-    console.log('test_2', queryParams)
     const url = baseAPIUrl + '/activate-user/';
     $.ajax({
       type: 'POST',

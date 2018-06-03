@@ -4,7 +4,8 @@ import router from './router';
 import todoRepr from './helpers/todoRepr';
 import categorieRepr from './helpers/categorieRepr';
 import handleErrors from './helpers/handleErrors';
-import { baseAPIUrl, user } from './constants';
+import user from './helpers/getUser';
+import { baseAPIUrl } from './constants';
 
 $(function() {
   console.log(window.location.pathname)
@@ -81,7 +82,7 @@ $(function() {
           url: $(this).attr('action'),
           data: data,
           headers: {
-              'Authorization': `Token ${user.auth_token}`
+              'Authorization': `Token ${user().auth_token}`
           },
           error: function(error) {
             console.log('error', error)
@@ -118,7 +119,7 @@ $(function() {
       url: url,
       data: data,
       headers: {
-        'Authorization': `Token ${user.auth_token}`
+        'Authorization': `Token ${user().auth_token}`
       },
       error: function(error) {
         console.log('rm_error', error);
@@ -141,7 +142,7 @@ $(document).on('click', '#resend-activation-email', function() {
     type: 'GET',
     url: url,
     data: {
-      email: user.email,
+      email: user().email,
     },
     error: function(error) {
       console.log('resend-activ-email', error);
