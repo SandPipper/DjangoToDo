@@ -20,7 +20,6 @@ class UserRegistration(APIView):
     #TODO need add permission only for non login user
     permission_classes = (AllowAny,)
     def post(self, request, **kwargs):
-        #TODO add password restore by email
         serializer = UserRegistrationSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serialized_user = serializer.save()
@@ -52,6 +51,7 @@ class ActivateView(APIView):
         except (TypeError, ValueError, OverflowError, ToDoUser.DoesNotExist) as e:
             print('errr!', e)
             user = None
+
         if user is not None and account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
@@ -62,6 +62,11 @@ class ActivateView(APIView):
         return Response(
             status=401
         )
+
+
+class RestorePassword(APIView):
+    #TODO add password restore by email
+    pass
 
 
 class UserLogin(APIView):
@@ -102,45 +107,22 @@ class UserToDo(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
-    #@validation_handler
     def get(self, request, **kwargs):
         todos = ToDo.objects.filter(user=request.user)
-        todos = ToDoSerializer(instance=todos, many=True)
+        serializer = ToDoSerializer(instance=todos, many=True).data
+        serializer.insert(0, ToDo.TYPES)
         return Response(
-            data=todos.data
+            data=serializer
         )
 
-    # @validation_handler
     def post(self, request, **kwargs):
-        # use serializer instead
-        # title = request.data.get('title')
-        # status = request.data.get('status')
-        # date_start = request.data.get('date_start')
-        # date_end = request.data.get('date_end')
-
-        # user = request.user
-
-        # todo = ToDo.objects.create(
-        #     title=title,
-        #     status=status,
-        #     date_start=datetime.strptime(date_start, '%m/%d/%Y').date(),
-        #     date_end=datetime.strptime(date_start, '%m/%d/%Y').date(),
-        #     user=user,
-        # )
-        # todo.save()
-
-        # todo = ToDoSerializer(instance=todo)
-
-        # return Response(
-        #     data=todo
-        # )
-
         serializer = ToDoSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            serializer = ToDoSerializer(instance=ToDo.objects.filter(user=request.user), many=True)
+            serializer = ToDoSerializer(instance=ToDo.objects.filter(user=request.user), many=True).data
+            serializer.insert(0, ToDo.TYPES)
             return Response(
-            data=serializer.data
+            data=serializer
             )
         return Response({
             'message': serializer.errors,

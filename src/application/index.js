@@ -5,10 +5,11 @@ import todoRepr from './helpers/todoRepr';
 import categorieRepr from './helpers/categorieRepr';
 import handleErrors from './helpers/handleErrors';
 import user from './helpers/getUser';
+import mainContainerHandler from './mainContainer';
 import { baseAPIUrl } from './constants';
 
 $(function() {
-  console.log(window.location.pathname)
+  mainContainerHandler();
   router(window.location.pathname);
 
   $(document).on('submit', '#form-registartation', function(e) {
@@ -95,7 +96,6 @@ $(function() {
                 $(this).css({ borderColor: '#f2f2f2', color: 'grey' });
               });
               $('#todo-errors').html('');
-
               const data_content = todoRepr(data);
               const categories = categorieRepr(data_content);
 

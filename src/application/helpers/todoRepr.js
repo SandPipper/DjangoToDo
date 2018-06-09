@@ -1,4 +1,8 @@
 export default data => data.reduce((acc, todo) => {
+  if (!todo.title) {
+    acc['TYPES'] = todo;
+    return acc;
+  }
   const todo_template = `
   <div class='todo'>
       <h3>${todo.title}</h3>
@@ -10,6 +14,5 @@ export default data => data.reduce((acc, todo) => {
   </div>
   `;
   acc[todo.status] ? acc[todo.status] += todo_template : acc[todo.status] = todo_template;
-
   return acc;
 }, {});

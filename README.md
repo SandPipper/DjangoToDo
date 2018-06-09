@@ -1,5 +1,5 @@
 # DjangoToDo
-This is a basic django api with reactjs and redux in docker
+This is the base django api with various implementations of the front-end. ReactJS/redux and jQuery in different branches.
 
 Features:
 ========
@@ -7,6 +7,7 @@ Features:
 - Webpack;
 - Docker/Docker-compose;
 - Gunicorn and Nginx as a server;
+- jQuery and React/Redux in different branches;
 
 Configure docker build
 ======================
@@ -19,6 +20,4 @@ For provide makemigrations
 
 Run containers
 ==============
-`docker-compose up` 
-or
 `docker-compose up -d todo_app_pg && sleep 2 && docker-compose up`

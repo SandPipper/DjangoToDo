@@ -2,10 +2,30 @@
 @import 'todos';
 @import 'categorie';
 @import 'not_found';
+@import 'header';
+
+body {
+  margin: 0;
+}
 
 input {
   transition: background-color .5s ease-in-out;
    -moz-transition: background-color .5s ease-in-out;
    -webkit-transition: background-color .5s ease-in-out; 
   -o-transition: background-color .5s ease-in-out; 
+}
+
+.wrap {
+  margin: 0 auto;
+  max-width: 90%;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #3f65a3;
+  color: white;
+  text-align: center;
 }

@@ -66,7 +66,7 @@ class ToDoSerializer(serializers.ModelSerializer):
         model = ToDo
         fields = (
             'title', 'status', 'date_start',
-            'date_end', 'date_created', 'user'
+            'date_end', 'date_created', 'user',
         )
         read_only_fields = ('date_created',)
 
