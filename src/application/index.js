@@ -8,7 +8,6 @@ import user from './helpers/getUser';
 import mainContainerHandler from './mainContainer';
 import { baseAPIUrl } from './constants';
 
-$(function() {
   mainContainerHandler();
   router(window.location.pathname);
 
@@ -71,10 +70,11 @@ $(function() {
       e.preventDefault();
       const this_form = this;
       const formData = $(this).serializeArray();
-      const date = formData[1].value.split(' - ');
+      const date = formData[2].value.split(' - ');
       const data = {
-        csrfmiddlewaretoken: formData[2].value,
+        csrfmiddlewaretoken: formData[3].value,
         title: formData[0].value,
+        body: formData[1].value,
         date_start: date[0],
         date_end: date[1],
       };
@@ -99,7 +99,7 @@ $(function() {
               const data_content = todoRepr(data);
               const categories = categorieRepr(data_content);
 
-              $('.todos').html(categories);
+              $('.categories').html(categories);
           },
       });
 
@@ -130,26 +130,39 @@ $(function() {
     })
   });
 
-});
 
-$(document).on('click', '#back-to-index', function() {
-  router();
-});
 
-$(document).on('click', '#resend-activation-email', function() {
-  const url = baseAPIUrl + '/activate-user/';
-  $.ajax({
-    type: 'GET',
-    url: url,
-    data: {
-      email: user().email,
-    },
-    error: function(error) {
-      console.log('resend-activ-email', error);
-      if (error.status === 401) return router();
-    },
-    success: function() {
-      return router();
+  $(document).on('click', '#back-to-index', function() {
+    router();
+  });
+
+  $(document).on('click', '#resend-activation-email', function() {
+    const url = baseAPIUrl + '/activate-user/';
+    $.ajax({
+      type: 'GET',
+      url: url,
+      data: {
+        email: user().email,
+      },
+      error: function(error) {
+        console.log('resend-activ-email', error);
+        if (error.status === 401) return router();
+      },
+      success: function() {
+        return router();
+      }
+    })
+  });
+  
+  $(document).on('click', '.categorie-button', function() {
+    const active = $('.categorie-active');
+    const isSecondClick = $(this).parent().hasClass('categorie-active');
+
+    if (active) {
+      $(active).removeClass('categorie-active');
     }
-  })
-});
+    if (!isSecondClick) {
+      $(this).parent().addClass('categorie-active');
+    }
+    
+  });

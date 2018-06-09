@@ -20,19 +20,23 @@
 }
 
 #form-registartation, #form-login, #form-todo, .todo {
-  border: 2px solid black;
+  border: 3px solid black;
   border-top: none;
   border-bottom: none;
   border-radius: 10px;
   padding: 20px;
   margin-left: 50px;
   max-width: 300px;
+  background-color:#3f65a3;
 
-  input {
+  input, textarea {
     padding: 10px;
     margin: 10px;
     width: 80%;
+    max-width: 80%;
     border-radius: 10px;
+    background-color: #f7f9ff;
+    font-size: 1rem;
   }
 
   button {

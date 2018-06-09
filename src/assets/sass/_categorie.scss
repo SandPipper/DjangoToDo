@@ -1,13 +1,48 @@
 .categorie {
   display: flex;
-  border: 2px solid #000;
+  flex-direction: column;
+  border: 3px solid #000;
   border-top: none;
   border-bottom: none;
   border-radius: 10px;
   padding: 20px;
   margin-left: 50px;
-  max-width: 500px;
+  max-width: 10vw;
+  max-height: 500px;
+  overflow: hidden;
+  transition: all 0.75s;
+  background-color: #8eabff;
+  color: #000;
   h3 {
   }
   
+}
+
+.categories {
+  display: flex;
+}
+
+.categorie-active {
+  max-width: 60vw;
+  max-height: 100%;
+  transition: all .75s;
+}
+
+.categorie-button {
+  transform: rotate(90deg);
+  font-size: 2.5rem;
+  display: block;
+  background-color: #f7f9ff;
+  border: 3px solid #3f65a3;
+  border-radius: 50%;
+  margin: auto;
+  padding: 5px 10px;
+  text-align: center;
+  line-height: 65px;
+  cursor: pointer;
+
+  span {
+    color: #3f65a3;
+    padding: 2px 5px;
+  }
 }

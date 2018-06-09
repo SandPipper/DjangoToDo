@@ -65,7 +65,7 @@ class ToDoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDo
         fields = (
-            'title', 'status', 'date_start',
+            'title', 'body', 'status', 'date_start',
             'date_end', 'date_created', 'user',
         )
         read_only_fields = ('date_created',)
@@ -77,6 +77,8 @@ class ToDoSerializer(serializers.ModelSerializer):
         min_length=3,
         validators=[UniqueValidator(queryset=ToDo.objects.all())]
     )
+
+    body = serializers.CharField()
 
     date_start = serializers.DateField()
     date_end = serializers.DateField()

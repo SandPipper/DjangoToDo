@@ -3,7 +3,7 @@ export default (thisForm, errorMessage) => {
   // take element for errors output for this form
   const errorOutput = $(thisForm).next();
   // unhightlight fields in form
-  $(thisForm).find('input').each(function() {
+  $(thisForm).find('input, textarea').each(function() {
     $(this).css({ borderColor: '#f2f2f2', color: 'grey' });
   })
   // I think better rewrite a little rewrite respone API to avoid this if statement
@@ -12,7 +12,9 @@ export default (thisForm, errorMessage) => {
     // construct html string representation for errors output and highlight field with errors;
     errorMessage = Object.keys(errorMessage).reduce((acc, err) => {
       // find needed field
-      let field = $(thisForm).children(`input[name=${err !== 'date_start' ? err : 'date_range' }]`);
+      let field = $(thisForm).children(`
+          ${err === 'body' ? 'textarea' : 'input'}[name=${err !== 'date_start' ? err : 'date_range' }]
+        `);
       // highlight field with errors
       field.css({ borderColor: '#e80909', color: '#ff0000' }); 
 

@@ -44,14 +44,15 @@ export default () => {
         <div class='todos-container'>
           <h1>Simple ToDo form</h1>
           <form id='form-todo' method='POST' action="${url}" >
-            <input id='input-title' name='title' type='text' placeholder='write your todo'>
+            <input id='input-title' name='title' type='text' placeholder='write status to your todo'>
+            <textarea ud='input-body' name='body' type='text' placeholder='write your todo'></textarea>
             <input id='daterangepicker' name='date_range' type='text' placeholder='Choice start and end date of todo'>
             <button type='submit'>Submit</button>
             <input type='hidden' name='csrfmiddlewaretoken' value='${csrftoken}'>
           </form>
           <div id='todo-errors' hidden></div>
           <br />
-          <div class='todos'>${categories.join('')}</div>
+          <div class='categories'>${categories.join('')}</div>
         </div>
       `;
 

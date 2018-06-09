@@ -1,12 +1,12 @@
 .todos {
   display: flex;
-  flex-flow: row wrap;
+  // flex-wrap: wrap;
 }
 
 .todo {
   margin: 40px;
   height: 200px;
-  h3 {
+  h3, p {
     text-align: center;
   }
 }

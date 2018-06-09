@@ -8,6 +8,9 @@ export default todos => {
       return `
         <div class="categorie ${categorie.toLowerCase().replace(/' '/g, /'_'/)}">
           <h3>${categorie}</h3>
+          <div class="categorie-button">
+            <span>»</span>
+          </div>
           <div class='todos'>${todos[categorie]}</div>
         </div>
       `;
@@ -15,6 +18,9 @@ export default todos => {
       return `
         <div class="categorie ${categorie.toLowerCase().replace(/' '/g, /'_'/)}">
           <h3>${categorie}</h3>
+          <div class="categorie-button">
+            <span>»</span>
+          </div>
           <div class='todos'></div>
         </div>
       `;

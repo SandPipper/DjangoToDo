@@ -6,9 +6,10 @@
 
 body {
   margin: 0;
+  background: #e5eeff;
 }
 
-input {
+input, textarea {
   transition: background-color .5s ease-in-out;
    -moz-transition: background-color .5s ease-in-out;
    -webkit-transition: background-color .5s ease-in-out; 
@@ -21,11 +22,13 @@ input {
 }
 
 footer {
-  position: fixed;
+  position: relative;
   left: 0;
   bottom: 0;
   width: 100%;
   background-color: #3f65a3;
   color: white;
   text-align: center;
+  padding: 5px 0;
+  margin-top: 50px;
 }

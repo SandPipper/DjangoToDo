@@ -65,12 +65,13 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 class ToDo(models.Model):
     TYPES = (
-        ('Started', 'Started'),
         ('Not Started', 'Not Started'),
+        ('Started', 'Started'),
         ('Ended', 'Ended'),
     )
 
     title = models.CharField(max_length=300, unique=True)
+    body = models.TextField()
     status = models.CharField(max_length=30, choices=TYPES)
 
     date_created = models.DateField(default=timezone.now)
@@ -80,16 +81,6 @@ class ToDo(models.Model):
     user = models.ForeignKey(ToDoUser,
                              related_name='todos',
                              on_delete=models.CASCADE)
-
-    # Relocate validation to serializer
-    # def save(self, *args, **kwargs):
-    #     if not self.date_start:
-    #         raise ValidationError('Date start is required')
-    #     if not self.date_end:
-    #         raise ValidationError('Date end is required') 
-    #     if not self.title:
-    #         raise ValidationError('Title is required')
-    #     super(ToDo, self).save(*args, **kwargs)
     
     def __str__(self):
         return f'<{self.title}, {self.status}, {self.user.username}>'

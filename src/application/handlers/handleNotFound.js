@@ -1,6 +1,6 @@
 export default (user) => {
   const content = `
-    <div>Not found</div>
+    <h3>Not found</h3>
     <div id='back-to-index'>Click here to retrun to index</div>
   `;
   const headerTitle = `
