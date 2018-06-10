@@ -1,0 +1,23 @@
+.modal {
+  font-size: 3rem;
+  position: fixed;
+  top: 20vh;
+  left: 20vw;
+  height: 60vh;
+  width: 60vw;
+  max-width: 100vw;
+  background-color: white !important;
+  transition: all 1s;
+  z-index: 1;
+  text-align: center;
+  z-index: 1;
+  border-radius: 10px;
+  h2 {
+    margin-top: 15vh;
+  }
+}
+
+.choice-buttons {
+  display: flex;
+  justify-content: space-evenly;
+}

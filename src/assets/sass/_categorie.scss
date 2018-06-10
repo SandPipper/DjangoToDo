@@ -1,16 +1,9 @@
 .categorie {
   display: flex;
   flex-direction: column;
-  border: 3px solid #000;
-  border-top: none;
-  border-bottom: none;
-  border-radius: 10px;
-  padding: 20px;
-  margin-left: 50px;
-  max-width: 10vw;
-  max-height: 500px;
+  max-height: 100px;
   overflow: hidden;
-  transition: all 0.75s;
+  transition: all .5s;
   background-color: #8eabff;
   color: #000;
   h3 {
@@ -18,31 +11,102 @@
   
 }
 
+.categorie-header {
+  display: flex;
+  width: 20%;
+  padding: 20px;
+  justify-content: space-around;
+  h2 {
+    width: 160px;
+  }
+}
+
 .categories {
   display: flex;
+  flex-direction: column;
 }
 
 .categorie-active {
-  max-width: 60vw;
-  max-height: 100%;
-  transition: all .75s;
+  // max-width: 60vw;
+  max-height: 100vh;
+  transition: all 1s;
 }
 
 .categorie-button {
-  transform: rotate(90deg);
+  // transform: rotate(90deg);
   font-size: 2.5rem;
   display: block;
   background-color: #f7f9ff;
   border: 3px solid #3f65a3;
   border-radius: 50%;
-  margin: auto;
+  margin: 0;
   padding: 5px 10px;
   text-align: center;
-  line-height: 65px;
   cursor: pointer;
 
-  span {
-    color: #3f65a3;
-    padding: 2px 5px;
+  .triangle {
+    width:0;
+    border-left: 10px solid #f7f9ff; 
+    border-right :10px solid #f7f9ff;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.not_started {
+  background-color: rgba(255, 0, 0, 0.2);
+  border-bottom: 2px solid rgb(255, 0, 0);
+  h2 {
+    color: rgba(255,0,0,0.8);
+  }
+  .categorie-button {
+    border: 3px solid rgba(255,0,0,0.8);
+    .triangle {
+      border-top: 20px solid rgba(255,0,0,0.8);
+    }
+  }
+  .todo {
+    background-color: rgba(255,0,0,0.2);
+    .todo-menu-button {
+    }
+  }
+}
+
+.started {
+  background-color: rgba(252, 208, 50, 0.2);
+  border-bottom: 2px solid rgb(252, 208, 50);
+  h2 {
+    color: rgba(252, 208, 50, 0.8);
+  }
+  .categorie-button {
+    border: 3px solid rgba(252, 208, 50, 0.8);
+    .triangle {
+      border-top: 20px solid rgba(252, 208, 50, 0.8);
+    }
+  }
+  .todo {
+    background-color: rgba(252, 208, 50, 0.3);
+    .todo-menu-button {
+    }
+  }
+}
+
+.ended {
+  background-color: rgba(0, 255, 0, 0.2);
+  border-bottom: 2px solid rgb(0, 255, 0);
+  h2 {
+    color: rgba(0,255,0,0.8);
+  }
+  .categorie-button {
+    border: 3px solid rgba(0,255,0,0.8);
+    .triangle {
+      border-top: 20px solid rgba(0,255,0,0.8);
+    }
+  }
+  .todo {
+    background-color: rgba(0,255,0,0.3);
+    .todo-menu-button {
+    }
   }
 }

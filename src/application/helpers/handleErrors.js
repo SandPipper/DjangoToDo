@@ -2,6 +2,7 @@ export default (thisForm, errorMessage) => {
   console.log('thisForm', thisForm)
   // take element for errors output for this form
   const errorOutput = $(thisForm).next();
+  errorOutput.removeClass('show-error');
   // unhightlight fields in form
   $(thisForm).find('input, textarea').each(function() {
     $(this).css({ borderColor: '#f2f2f2', color: 'grey' });
@@ -20,12 +21,16 @@ export default (thisForm, errorMessage) => {
 
       acc += errorMessage[err].reduce((allMess, mess) => {
         if (err === 'date_end') return allMess;
-        allMess += `<div class='errors'><p>${err !== 'date_start' ? err : 'date_range' } - ${mess}</p></div>`;
+        allMess += `<div class='errors'><p><strong>${err !== 'date_start' ? err : 'date_range' }</strong> - ${mess}</p></div>`;
         return allMess;
       }, '');
 
       return acc;
     }, '');
+  } else {
+    let field = $(thisForm).children('input');
+    field.css({ borderColor: '#e80909', color: '#ff0000' });
   }
-  errorOutput.show().html(errorMessage);
+  errorOutput.addClass('show-error');
+  errorOutput.html(errorMessage);
 };

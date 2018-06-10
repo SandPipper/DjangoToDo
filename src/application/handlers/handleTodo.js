@@ -15,7 +15,6 @@ export default () => {
   const headerEnd = `
     <button id='logout'>Log Out</button>
   `;
-
   $('#header-title').html(headerTitle);
   $('#header-end').html(headerEnd);
 
@@ -42,16 +41,23 @@ export default () => {
       const categories = categorieRepr(todos);
       const content = `
         <div class='todos-container'>
-          <h1>Simple ToDo form</h1>
-          <form id='form-todo' method='POST' action="${url}" >
-            <input id='input-title' name='title' type='text' placeholder='write status to your todo'>
-            <textarea ud='input-body' name='body' type='text' placeholder='write your todo'></textarea>
-            <input id='daterangepicker' name='date_range' type='text' placeholder='Choice start and end date of todo'>
-            <button type='submit'>Submit</button>
-            <input type='hidden' name='csrfmiddlewaretoken' value='${csrftoken}'>
-          </form>
-          <div id='todo-errors' hidden></div>
-          <br />
+          <div class='todos-header'>
+            <div class='todos-stared'>
+              <div>Stared todo will be here soon</div>
+            </div>
+            <div class='todos-form'>
+              <h1>ToDo constructor</h1>
+              <form id='form-todo' method='POST' action="${url}" >
+                <input id='input-title' name='title' type='text' placeholder='write status to your todo'>
+                <textarea ud='input-body' name='body' type='text' placeholder='write your todo'></textarea>
+                <input id='daterangepicker' name='date_range' type='text' placeholder='Choice start and end date of todo'>
+                <button type='submit'>Submit</button>
+                <input type='hidden' name='csrfmiddlewaretoken' value='${csrftoken}'>
+              </form>
+              <div id='todo-errors'></div>
+            </div>
+            <br />
+          </div>
           <div class='categories'>${categories.join('')}</div>
         </div>
       `;

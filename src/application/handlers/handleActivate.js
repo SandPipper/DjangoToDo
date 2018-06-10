@@ -35,6 +35,7 @@ export default (data, queryParams) => {
       <div id='resend-activation-email'>Click here for resending of activation link</div>
     </div>
   `;
+  
   $('#header-title').html(headerTitle);
   $('#header-end').html(headerEnd);
   $('#main-content').html(content);

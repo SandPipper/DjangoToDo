@@ -1,33 +1,37 @@
 #form-container {
-  padding: 50px;
   display: flex;
+  flex-direction: column;
+  margin: 20px auto;
 }
 
 #login-container {
-  padding: 25px 50px;
-
-  h1 {
-    margin-left: 48px;
-  }
 
   #login-errors {
-    padding: 30px 74px;
+    padding: 30px;
   }
 }
 
 #registration-errors, #todo-errors {
-  padding: 30px 64px;
+  padding: 10px;
+  overflow: hidden;
+  max-height: 0;
+  transition: all 1s;
 }
 
-#form-registartation, #form-login, #form-todo, .todo {
+.show-error {
+  max-height: 200px !important;
+  transition: all 1s;
+}
+
+#form-registration, #form-login, #form-todo, .todo {
   border: 3px solid black;
   border-top: none;
   border-bottom: none;
   border-radius: 10px;
   padding: 20px;
-  margin-left: 50px;
   max-width: 300px;
   background-color:#3f65a3;
+  margin: auto;
 
   input, textarea {
     padding: 10px;
@@ -47,8 +51,29 @@
   }
 }
 
+
+
+#login-container, #registration-container {
+  display: none;
+}
+
+.active-form {
+  display: block !important;
+}
+
 .todos-container {
-  h1 {
-    margin-left: 60px;
+}
+
+#info-content {
+  margin: 20px auto;
+}
+
+#header-form-container {
+  margin: 0 auto;
+  width: 100%;
+  button {
+    width: 49%;
   }
 }
+
+

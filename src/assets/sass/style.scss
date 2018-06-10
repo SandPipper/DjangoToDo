@@ -3,10 +3,22 @@
 @import 'categorie';
 @import 'not_found';
 @import 'header';
+@import 'modals';
 
 body {
   margin: 0;
   background: #e5eeff;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+main {
+  height: 100%;
 }
 
 input, textarea {
@@ -21,8 +33,11 @@ input, textarea {
   max-width: 90%;
 }
 
+#main-content {
+  display: flex;
+}
+
 footer {
-  position: relative;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -30,5 +45,4 @@ footer {
   color: white;
   text-align: center;
   padding: 5px 0;
-  margin-top: 50px;
 }

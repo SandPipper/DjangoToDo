@@ -2,6 +2,7 @@ export default () => {
   const blocks = ['header', 'main', 'footer'];
   const content = blocks.reduce((acc, block) => {
     let blockContent;
+
     switch (block) {
       case 'header':
         blockContent = `
@@ -21,6 +22,7 @@ export default () => {
         blockContent = '<h2>Copyright © 2018</h2>';
         break;
     }
+    
     acc += `
       <${block}>
         <div class="wrap">

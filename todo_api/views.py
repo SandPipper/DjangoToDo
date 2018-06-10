@@ -152,14 +152,24 @@ class UserToDo(APIView):
             data=todo
         )
 
-    @validation_handler
+    # @validation_handler
     def delete(self, request, **kwargs):
         title = request.data.get('title')
         print('title', title)
 
-        ToDo.objects.filter(title=title).all().delete()
+        todo_rm = ToDo.objects.filter(title=title).first()
 
+        if todo_rm:
+            todo_rm.delete()
+
+            return Response({
+                'message': 'delete',
+                'type': 'success',
+            })
+            
         return Response({
-            'message': 'delete',
-            'type': 'success',
-        })
+            'message': 'error',
+            'type': 'fail'
+            },
+            status=400
+        )

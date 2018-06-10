@@ -1,7 +1,9 @@
 export default (user) => {
   const content = `
-    <h3>Not found</h3>
-    <div id='back-to-index'>Click here to retrun to index</div>
+    <div>
+      <h3>Not found</h3>
+      <div id='back-to-index'>Click here to retrun to index</div>
+    </div>
   `;
   const headerTitle = `
     <h4>Page is not found</h4>
