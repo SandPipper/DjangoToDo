@@ -8,7 +8,6 @@ export default function router(route='/', data=JSON.parse(localStorage.getItem('
   console.log('router ', window.location);
   console.log('router route', route);
   switch(route) {
-
     case '/':
     case '/index':
     case '/auth':

@@ -98,7 +98,7 @@ $(document).on('submit', '#form-todo', function(e) {
         success: function(data) {
 
             $(this_form)[0].reset();
-            $(`#form-todo input`).each(function(){
+            $(`#form-todo input, textarea`).each(function(){
               $(this).css({ borderColor: '#f2f2f2', color: 'grey' });
             });
             $('#todo-errors').html('');
@@ -140,11 +140,10 @@ $(document).on('click', '.button-yes.button-todo_rm', function() {
       console.log('rm_error', error);
     },
     success: function(data) {
-      title.parent('.todo').remove();
+      $('.del-target').remove();
+      $('.modal').remove();
     }
   });
-  $('.del-target').remove();
-  $('.modal').remove();
 });
 
 $(document).on('click', '.button-no', function() {
