@@ -5,7 +5,8 @@ import todoRepr from './helpers/todoRepr';
 import categorieRepr from './helpers/categorieRepr';
 import handleErrors from './helpers/handleErrors';
 import user from './helpers/getUser';
-import showModal from './helpers/showModal';
+import showModalRM from './helpers/showModalRM';
+import showModalEdit from './helpers/showModalEdit';
 import mainContainerHandler from './mainContainer';
 import { baseAPIUrl } from './constants';
 
@@ -116,13 +117,13 @@ $(document).on('click', '.todo_rm', function(e) {
   const selector = e.handleObj.selector.slice(1, e.handleObj.selector.length);
   const title = $(this).nextAll('h3');
   const data = {
-     title: title.text(),
+     title: title.text().trim(),
   }
   const url = baseAPIUrl + '/todo/';
   if ($('.del-target')) $('.del-target').removeClass('del-target');
 
   $(this).parent('.todo').addClass('del-target');
-  showModal(selector, data, url);
+  showModalRM(selector, data, url);
 });
 
 $(document).on('click', '.button-yes.button-todo_rm', function() {
@@ -148,6 +149,7 @@ $(document).on('click', '.button-yes.button-todo_rm', function() {
 
 $(document).on('click', '.button-no', function() {
   $('.del-target').removeClass('del-target');
+  $('.edit-target').removeClass('edit-target');
   $('.modal').remove();
 });
 
@@ -204,4 +206,60 @@ $(document).on('click', '.todo_open', function() {
   const text = todo.find('p');
   text.hasClass('open-todo-body') ? text.removeClass('open-todo-body') : text.addClass('open-todo-body');
   todo.hasClass('open-todo') ? todo.removeClass('open-todo') : todo.addClass('open-todo');
+});
+
+$(document).on('click', '.todo-edit', function(e) {
+
+  const todo = $(this).parents('.todo')
+  todo.addClass('edit-target');
+
+  const title = todo.children('h3').text().trim();
+  const body = todo.children('p').text().trim();
+  const dateRange = todo.find('h5');
+  const dateStart = dateRange[0].innerHTML.split(': ')[1];
+  const dateEnd = dateRange[1].innerHTML.split(': ')[1];
+  const categorie = todo.parents('.categorie').find('.categorie-header h2').text();
+
+  const data = {
+    title,
+    body,
+    start_date: dateStart,
+    end_date: dateEnd,
+    categorie
+  };
+
+  const url = baseAPIUrl + '/todo/';
+  const selector = e.handleObj.selector.slice(1, e.handleObj.selector.length);
+
+  showModalEdit(selector, data, url);
+
+});
+
+$(document).on('click', '.button-yes.button-todo-edit', function() {
+  const form = $('.modal-todo-edit form');
+  $.ajax({
+    type: form.attr('method'),
+    url: form.attr('action'),
+    data: form.serialize(),
+    headers: {
+        'Authorization': `Token ${user().auth_token}`
+    },
+    error: function(error) {
+      console.log('error', error)
+      handleErrors(this_form, error.responseJSON.message);
+    },
+    success: function(data) {
+      const editedTodo = $('.edit-target');
+      editedTodo.children('h3').text(data.title);
+      editedTodo.children('p').text(data.body);
+
+      const startDate = `Start date: ${data.start_date}`;
+      const endDate = `End date: ${data.end_date}`;
+      editedTodo.find('h5')[0].innerHTML = startDate;
+      editedTodo.find('h5')[1].innerHTML = endDate;
+      $('.modal').remove();
+      $('.edit-target').removeClass('edit-target');
+    }, 
+  })
+
 });

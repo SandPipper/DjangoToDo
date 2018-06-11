@@ -27,6 +27,7 @@
   "devDependencies": {
     "bootstrap": "^4.1.0",
     "daterangepicker": "^2.1.27",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.3",
     "webpack": "^3.11.0",

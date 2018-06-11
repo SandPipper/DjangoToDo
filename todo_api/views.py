@@ -131,19 +131,17 @@ class UserToDo(APIView):
             status=status.HTTP_406_NOT_ACCEPTABLE
         )
 
-    @validation_handler
     def put(self, request, **kwargs):
-        id = request.gata.get('id')
         title = request.data.get('title')
-        status = request.data.get('status')
-        date_start = request.data.get('date_start')
+        todo = ToDo.objects.filter(title=title)
+        print('test_todo', todo)
+        date_start = request.data.get('date_start') if request.data.get('date_start') else todo[0].date_start
         date_end = request.data.get('date_end')
-
-        todo = Todo.objects.get(id=id).update(
+        todo.update(
             title=title,
-            status=status,
             date_start=date_start,
-            date_end=date_end
+            date_end=date_end,
+            status=todo.status
         )
 
         todo = ToDoSerializer(instance=todo).data

@@ -11,7 +11,6 @@ Features:
 
 Configure docker build
 ======================
-
 `cp docker/environments.example docker/environments`
 
 For provide makemigrations

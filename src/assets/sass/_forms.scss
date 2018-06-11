@@ -38,6 +38,7 @@
     margin: 10px;
     width: 80%;
     max-width: 80%;
+    min-width: 80%;
     border-radius: 10px;
     background-color: #f7f9ff;
     font-size: 1rem;
@@ -76,4 +77,7 @@
   }
 }
 
+input:disabled {
+  background-color: grey !important;
+}
 

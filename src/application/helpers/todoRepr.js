@@ -3,12 +3,16 @@ export default data => data.reduce((acc, todo) => {
     acc['TYPES'] = todo;
     return acc;
   }
+  const isNotEnded = todo.status !== 'Ended';
   const todo_template = `
   <div class='todo'>
       <button class='todo_rm todo-menu-button' type='delete'>X</button>
       <button class='todo_open todo-menu-button'>☐</button>
-      <button class='todo_turn_off todo-menu-button'>_</button>
-      <h3>${todo.title}</h3>
+      ${isNotEnded ? "<button class='todo_track todo-menu-button'><i class='fa fa-eye' aria-hidden='true'></i></button>" : ''}
+      <h3>
+        ${isNotEnded ? "<i class='fa fa-pencil todo-edit' aria-hidden='true'></i>" : ''}
+        ${todo.title}
+      </h3>
       <p>${todo.body}</p>
       <div class='todo-body'>
         <h5>Start date: ${todo.date_start}</h5>

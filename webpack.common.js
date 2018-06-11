@@ -20,7 +20,7 @@ module.exports = {
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.js', '.scss'],
+    extensions: ['.js', '.scss', '.css'],
     alias: {
       'dist': path.resolve('dist')
     }
@@ -45,6 +45,11 @@ module.exports = {
           fallback: 'style-loader',
           use: ['css-loader']
         }),
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader',
+        options: "fonts/[name].[ext]",
       },
     ]
   },

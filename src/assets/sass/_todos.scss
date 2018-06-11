@@ -101,3 +101,27 @@
   overflow: visible !important;
   max-height: 100% !important;
 }
+
+.todo-edit {
+  cursor: pointer;
+}
+
+.modal-todo-edit {
+  h2 {
+    margin: auto !important;
+  }
+  .choice-buttons {
+    margin-top: -25px;
+  }
+  .todos-form {
+    width: initial;
+    border: 5px solid black;
+    border-radius: 10px;
+    form {
+      width: 90%;
+      border-radius: 10px !important;
+      max-width: initial !important;
+    }
+  }
+
+}
