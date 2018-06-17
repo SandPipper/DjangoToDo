@@ -65,10 +65,10 @@ class ToDoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDo
         fields = (
-            'title', 'body', 'status', 'date_start',
+            'id', 'title', 'body', 'status', 'date_start',
             'date_end', 'date_created', 'user',
         )
-        read_only_fields = ('date_created',)
+        read_only_fields = ('date_created', 'id')
 
     status = serializers.SerializerMethodField()
 

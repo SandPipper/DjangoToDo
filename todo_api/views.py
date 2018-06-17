@@ -132,30 +132,34 @@ class UserToDo(APIView):
         )
 
     def put(self, request, **kwargs):
-        title = request.data.get('title')
-        todo = ToDo.objects.filter(title=title)
-        print('test_todo', todo)
-        date_start = request.data.get('date_start') if request.data.get('date_start') else todo[0].date_start
-        date_end = request.data.get('date_end')
-        todo.update(
-            title=title,
-            date_start=date_start,
-            date_end=date_end,
-            status=todo.status
-        )
+        # todo_id = request.data.get('todo_id')
+        # todo = ToDo.objects.filter(id=todo_id)
+        # print('test_todo', todo)
+        serializer = ToDoSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.update(serializer.instance, serializer.validated_data)
+            # todo.update(
+            #     title=title,
+            #     date_start=date_start,
+            #     date_end=date_end,
+            #     status=todo.status
+            # )
+            todo = ToDo.objects.get(id=request.data.get('id'))
+            todo = ToDoSerializer(instance=todo).data
 
-        todo = ToDoSerializer(instance=todo).data
-
+            return Response(
+                data=todo
+            )
         return Response(
-            data=todo
+            data=serializer.errors,
+            status=400
         )
 
     # @validation_handler
     def delete(self, request, **kwargs):
-        title = request.data.get('title')
-        print('title', title)
+        todo_id = request.data.get('id')
 
-        todo_rm = ToDo.objects.filter(title=title).first()
+        todo_rm = ToDo.objects.filter(id=todo_id).first()
 
         if todo_rm:
             todo_rm.delete()

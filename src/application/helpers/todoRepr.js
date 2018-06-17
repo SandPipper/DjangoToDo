@@ -5,7 +5,7 @@ export default data => data.reduce((acc, todo) => {
   }
   const isNotEnded = todo.status !== 'Ended';
   const todo_template = `
-  <div class='todo'>
+  <div class='todo' data-id=${todo.id}>
       <button class='todo_rm todo-menu-button' type='delete'>X</button>
       <button class='todo_open todo-menu-button'>☐</button>
       ${isNotEnded ? "<button class='todo_track todo-menu-button'><i class='fa fa-eye' aria-hidden='true'></i></button>" : ''}

@@ -115,9 +115,9 @@ $(document).on('submit', '#form-todo', function(e) {
 
 $(document).on('click', '.todo_rm', function(e) {
   const selector = e.handleObj.selector.slice(1, e.handleObj.selector.length);
-  const title = $(this).nextAll('h3');
+  const id = $(this).parent('.todo').data('id');
   const data = {
-     title: title.text().trim(),
+     id,
   }
   const url = baseAPIUrl + '/todo/';
   if ($('.del-target')) $('.del-target').removeClass('del-target');
@@ -129,7 +129,6 @@ $(document).on('click', '.todo_rm', function(e) {
 $(document).on('click', '.button-yes.button-todo_rm', function() {
   const url = $(this).data('url');
   const data = $(this).data('obj');
-
   $.ajax({
     type: 'DELETE',
     url: url,
@@ -246,7 +245,7 @@ $(document).on('click', '.button-yes.button-todo-edit', function() {
     },
     error: function(error) {
       console.log('error', error)
-      handleErrors(this_form, error.responseJSON.message);
+      handleErrors(form, error.responseJSON.message);
     },
     success: function(data) {
       const editedTodo = $('.edit-target');
