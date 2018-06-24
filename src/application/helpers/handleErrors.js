@@ -5,7 +5,7 @@ export default (thisForm, errorMessage) => {
   errorOutput.removeClass('show-error');
   // unhightlight fields in form
   $(thisForm).find('input, textarea').each(function() {
-    $(this).css({ borderColor: '#f2f2f2', color: 'grey' });
+    $(this).css({ borderColor: '#f2f2f2', color: 'black' });
   })
   // I think better rewrite a little rewrite respone API to avoid this if statement
   if (typeof errorMessage !== 'string') {

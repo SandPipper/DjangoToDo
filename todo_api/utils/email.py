@@ -1,3 +1,4 @@
+from threading import Thread
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -6,8 +7,19 @@ from django.core.mail import EmailMessage
 from todo_api.tokens import account_activation_token
 
 
+class EmailThread(Thread):
+    def __init__(self, subject, html_content, recipient_list):
+        self.subject = subject
+        self.recipient_list = recipient_list
+        self.html_content = html_content
+        Thread.__init__(self)
+    
+    def run(self):
+        msg = EmailMessage(self.subject, self.html_content, to=[self.recipient_list])
+        msg.send()
+
+
 def send_activation_email(user, request):
-    #TODO implement this asynchronously
     current_site = get_current_site(request)
     mail_subject = 'Activate your account.'
     message = render_to_string('acc_activate_email.html', {
@@ -17,7 +29,4 @@ def send_activation_email(user, request):
         'token': account_activation_token.make_token(user),
     })
     to_email = user.email
-    email = EmailMessage(
-        mail_subject, message, to=[to_email]
-    )
-    email.send()
+    EmailThread(mail_subject, message, to_email).start()

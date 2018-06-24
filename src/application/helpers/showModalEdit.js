@@ -12,6 +12,7 @@ export default (selector, data, url) => {
           <input id='daterpicker-start' name='date_start' type='text' placeholder='Choice start date of todo' value='${data.start_date}' ${isStarted && 'disabled'}>
           <input id='datepicker-end' name='date_end' type='text' placeholder='Choice end date of todo' value='${data.end_date}'>
           <input type='hidden' name='csrfmiddlewaretoken' value='${csrftoken}'>
+          <input type='hidden' name='id' value='${data.id}'>
         </form>
         <div id='todo-errors'></div>
       </div>

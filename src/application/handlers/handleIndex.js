@@ -11,6 +11,7 @@ export default () => {
   `;
 
   const content = `
+    <div id="auth-content">
     <br />
     <div id='info-content'>
       <h2>Welcome to the ToDo application!</h2>
@@ -47,6 +48,7 @@ export default () => {
         </form>
         <div id='login-errors'></div>
       </div>
+    </div>
     </div>
   `;
 

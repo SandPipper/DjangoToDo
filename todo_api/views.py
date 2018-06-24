@@ -132,19 +132,10 @@ class UserToDo(APIView):
         )
 
     def put(self, request, **kwargs):
-        # todo_id = request.data.get('todo_id')
-        # todo = ToDo.objects.filter(id=todo_id)
-        # print('test_todo', todo)
         serializer = ToDoSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            serializer.update(serializer.instance, serializer.validated_data)
-            # todo.update(
-            #     title=title,
-            #     date_start=date_start,
-            #     date_end=date_end,
-            #     status=todo.status
-            # )
             todo = ToDo.objects.get(id=request.data.get('id'))
+            serializer.update(todo, serializer.validated_data)
             todo = ToDoSerializer(instance=todo).data
 
             return Response(

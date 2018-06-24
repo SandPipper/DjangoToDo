@@ -70,7 +70,7 @@ class ToDo(models.Model):
         ('Ended', 'Ended'),
     )
 
-    title = models.CharField(max_length=300, unique=True)
+    title = models.CharField(max_length=300)
     body = models.TextField()
     status = models.CharField(max_length=30, choices=TYPES)
 

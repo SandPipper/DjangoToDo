@@ -212,6 +212,7 @@ $(document).on('click', '.todo-edit', function(e) {
   const todo = $(this).parents('.todo')
   todo.addClass('edit-target');
 
+  const id = todo.data('id');
   const title = todo.children('h3').text().trim();
   const body = todo.children('p').text().trim();
   const dateRange = todo.find('h5');
@@ -220,6 +221,7 @@ $(document).on('click', '.todo-edit', function(e) {
   const categorie = todo.parents('.categorie').find('.categorie-header h2').text();
 
   const data = {
+    id,
     title,
     body,
     start_date: dateStart,
@@ -236,24 +238,26 @@ $(document).on('click', '.todo-edit', function(e) {
 
 $(document).on('click', '.button-yes.button-todo-edit', function() {
   const form = $('.modal-todo-edit form');
+  const disabled = form.find(':input:disabled').removeAttr('disabled');
+  const data = form.serializeArray();
+  disabled.attr('disabled', 'disabled');
   $.ajax({
     type: form.attr('method'),
     url: form.attr('action'),
-    data: form.serialize(),
+    data: data,
     headers: {
         'Authorization': `Token ${user().auth_token}`
     },
     error: function(error) {
       console.log('error', error)
-      handleErrors(form, error.responseJSON.message);
+      handleErrors(form, error.responseJSON);
     },
     success: function(data) {
       const editedTodo = $('.edit-target');
-      editedTodo.children('h3').text(data.title);
+      editedTodo.children('h3').html('<i class="fa fa-pencil todo-edit" aria-hidden="true"></i>' + data.title);
       editedTodo.children('p').text(data.body);
-
-      const startDate = `Start date: ${data.start_date}`;
-      const endDate = `End date: ${data.end_date}`;
+      const startDate = `Start date: ${data.date_start}`;
+      const endDate = `End date: ${data.date_end}`;
       editedTodo.find('h5')[0].innerHTML = startDate;
       editedTodo.find('h5')[1].innerHTML = endDate;
       $('.modal').remove();
