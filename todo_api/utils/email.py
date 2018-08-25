@@ -30,3 +30,13 @@ def send_activation_email(user, request):
     })
     to_email = user.email
     EmailThread(mail_subject, message, to_email).start()
+
+
+def send_restore_password_email(user, new_password):
+    mail_subject = 'Restore your password.'
+    message = render_to_string('restore_password_email.html', {
+        'user': user,
+        'new_password': new_password
+    })
+    to_email = user.email
+    EmailThread(mail_subject, message, to_email).start()

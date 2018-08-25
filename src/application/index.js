@@ -8,7 +8,7 @@ import user from './helpers/getUser';
 import showModalRM from './helpers/showModalRM';
 import showModalEdit from './helpers/showModalEdit';
 import mainContainerHandler from './mainContainer';
-import { baseAPIUrl } from './constants';
+import {baseAPIUrl, csrftoken} from './constants';
 
 // render main content
 mainContainerHandler();
@@ -42,6 +42,27 @@ $(document).on('submit', '#form-registration', function(e) {
         }
       },
   });
+});
+
+$(document).on('submit', '#form-restore-password-step-1', function(e) {
+    e.preventDefault();
+    const this_form = this;
+    console.log('tsetest!')
+    $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        error: function(error) {
+          handleErrors(this_form, error.responseJSON.message);
+        },
+        success: function(data) {
+           const content = `
+            <p>Please check your email</p>
+          `;
+
+           document.querySelector('#main-content').innerHTML = content;
+        }
+    })
 });
 
 $(document).on('submit', '#form-login', function(e) {
@@ -264,5 +285,4 @@ $(document).on('click', '.button-yes.button-todo-edit', function() {
       $('.edit-target').removeClass('edit-target');
     }, 
   })
-
 });

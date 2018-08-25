@@ -1,6 +1,3 @@
-from datetime import datetime
-
-from django.core.exceptions import ValidationError
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
@@ -10,11 +7,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import ToDoUser, ToDo
+from .models import ToDoUser, ToDo, ToDoUserManager
 from .serializers import UserRegistrationSerializer, UserSerializer, ToDoSerializer
 from .tokens import account_activation_token
 from .permissions import IsAnonymous
-from .utils import get_or_none, validation_handler, send_activation_email
+from .utils import get_or_none, send_activation_email, send_restore_password_email
 
 
 class UserRegistration(APIView):
@@ -65,8 +62,26 @@ class ActivateView(APIView):
 
 
 class RestorePassword(APIView):
-    #TODO add password restore by email
-    pass
+    permission_classes = (IsAnonymous,)
+
+    def post(self, request, **kwargs):
+        email = request.data.get('email')
+        user = get_or_none(ToDoUser, email=email)
+        if user:
+            user_manager = ToDoUserManager()
+            password = user_manager.make_random_password()
+            user.set_password(password)
+            user.save()
+            send_restore_password_email(user, password)
+            return Response(
+                data='ok'
+            )
+        return Response({
+            'message': 'Invalid email',
+            'type': 'incorrect_field',
+        },
+            status=status.HTTP_406_NOT_ACCEPTABLE
+        )
 
 
 class UserLogin(APIView):

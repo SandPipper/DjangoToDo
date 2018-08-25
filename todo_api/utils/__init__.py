@@ -3,7 +3,7 @@ from rest_framework import status
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 
-from .email import send_activation_email
+from .email import send_activation_email, send_restore_password_email
 
 def get_or_none(model, *args, **kwargs):
     '''

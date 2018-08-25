@@ -4,14 +4,27 @@
   margin: 20px auto;
 }
 
+#main-content >
+#form-restore-password-step-1 {
+  margin-top: 20px;
+}
+
+#restore-password-step-1-errors {
+  text-align: end;
+}
+
 #login-container {
+
+  a {
+    color: #fff;
+  }
 
   #login-errors {
     padding: 30px;
   }
 }
 
-#registration-errors, #todo-errors {
+#registration-errors, #todo-errors, #restore-password-step-1-errors {
   padding: 10px;
   overflow: hidden;
   max-height: 0;
@@ -23,7 +36,7 @@
   transition: all 1s;
 }
 
-#form-registration, #form-login, #form-todo, .todo {
+#form-registration, #form-login, #form-todo, #form-restore-password-step-1, .todo {
   border: 3px solid black;
   border-top: none;
   border-bottom: none;

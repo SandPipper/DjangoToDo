@@ -43,6 +43,7 @@ export default () => {
         <form id='form-login' method='POST' action="${loginUrl}" >
           <input class='input-username' name='username' type='text' placeholder='write your username or email'>
           <input class='input-password' name='password' type='password' placeholder='write your password'>
+          <a href="/restore-password">Forgot a password?</a>
           <input type='hidden' name='csrfmiddlewaretoken' value='${csrftoken}'>
           <button type='submit'>Submit</button>
         </form>

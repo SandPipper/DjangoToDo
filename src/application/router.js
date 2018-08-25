@@ -2,6 +2,7 @@ import handleActivate from './handlers/handleActivate';
 import handleIndex from './handlers/handleIndex';
 import handleTodo from './handlers/handleTodo';
 import handleNotFound from './handlers/handleNotFound';
+import handleRestorePassword from './handlers/handleRestorePassword';
 import getQueryParams from './helpers/getQueryParams';
 
 export default function router(route='/', data=JSON.parse(localStorage.getItem('user'))) {
@@ -15,6 +16,11 @@ export default function router(route='/', data=JSON.parse(localStorage.getItem('
       if (data && data.is_active) return router('/todo');
       history.pushState('', 'index', '/index');
       handleIndex();
+      break;
+
+    case '/restore-password':
+      if (data) return router();
+      handleRestorePassword() ;
       break;
 
     case '/todo':
