@@ -29,10 +29,6 @@ class UserRegistrationSerializer(serializers.HyperlinkedModelSerializer):
         min_length=4
     )
 
-    # def __init__(self, request=None, *args, **kwargs):
-    #     super().__init__(self, *args, **kwargs)
-    #     self.request = request
-
     def create(self, validated_data):
         user = ToDoUser.objects.create(
             username=validated_data.get('username'),
@@ -83,13 +79,25 @@ class ToDoSerializer(serializers.ModelSerializer):
     date_end = serializers.DateField()
 
     user = serializers.PrimaryKeyRelatedField(queryset=ToDoUser.objects.all(), default=serializers.CurrentUserDefault())
-    
+
+    _date_now = datetime.date(datetime.now())
 
     def get_status(self, obj):
-        date_now = datetime.date(datetime.now())
+        date_now = self._date_now
         if obj.date_start > date_now:
             return ToDo.TYPES[0][0]
         elif obj.date_start <= date_now and obj.date_end >= date_now:
             return ToDo.TYPES[1][0]
         else:
             return ToDo.TYPES[2][0]
+
+    def validate(self, data):
+        if data['date_start'] < self._date_now:
+            raise serializers.ValidationError({
+                'date_start': 'Start date must be not in the past'
+            })
+        if data['date_end'] < data['date_start']:
+            raise serializers.ValidationError({
+                'date_end': 'Date end must be after date start'
+            })
+        return super().validate(data)

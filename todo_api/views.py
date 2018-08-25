@@ -158,10 +158,9 @@ class UserToDo(APIView):
             )
         return Response(
             data=serializer.errors,
-            status=400
+            status=status.HTTP_400_BAD_REQUEST
         )
 
-    # @validation_handler
     def delete(self, request, **kwargs):
         todo_id = request.data.get('id')
 
@@ -179,5 +178,5 @@ class UserToDo(APIView):
             'message': 'error',
             'type': 'fail'
             },
-            status=400
+            status=status.HTTP_400_BAD_REQUEST
         )
