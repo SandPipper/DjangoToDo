@@ -13,12 +13,12 @@ from rest_framework import status
 from .models import ToDoUser, ToDo
 from .serializers import UserRegistrationSerializer, UserSerializer, ToDoSerializer
 from .tokens import account_activation_token
+from .permissions import IsAnonymous
 from .utils import get_or_none, validation_handler, send_activation_email
 
 
 class UserRegistration(APIView):
-    #TODO need add permission only for non login user
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAnonymous,)
     def post(self, request, **kwargs):
         serializer = UserRegistrationSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
@@ -70,7 +70,7 @@ class RestorePassword(APIView):
 
 
 class UserLogin(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAnonymous,)
 
     def post(self, request, **kwargs):
         username = request.data.get('username')

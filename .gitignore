@@ -3,5 +3,5 @@
 docker/environments
 venv/
 node_modules/
-todo_api/migrations
 .vscode
+.idea/
