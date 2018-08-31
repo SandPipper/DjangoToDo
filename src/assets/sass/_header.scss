@@ -2,6 +2,7 @@ header {
   border-bottom: 3px solid #000;
   background-color: #3f65a3;
   color: white;
+  height: 90px;
 }
 
 #header-content {
@@ -11,6 +12,8 @@ header {
 }
 
 #header-logo {
+  display: flex;
+  flex-direction: inherit;
   h1 {
     margin: 0;
     font-size: 2.5rem;
@@ -86,4 +89,23 @@ button {
   }
 }
 
+button:active {
+  background-image: linear-gradient(to bottom, #2365a0 0%, #3471b8 50%, #2365a0 50%, #3471b8 100%);
+}
+
+#user-settings {
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+  .fa-user {
+    text-align: center;
+    font-size: 35px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    color: #00bbff;
+  }
+}
 

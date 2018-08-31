@@ -4,10 +4,9 @@ import handleTodo from './handlers/handleTodo';
 import handleNotFound from './handlers/handleNotFound';
 import handleRestorePassword from './handlers/handleRestorePassword';
 import getQueryParams from './helpers/getQueryParams';
+import addUserSettings from './helpers/addUserSettings';
 
 export default function router(route='/', data=JSON.parse(localStorage.getItem('user'))) {
-  console.log('router ', window.location);
-  console.log('router route', route);
   switch(route) {
     case '/':
     case '/index':
@@ -38,7 +37,6 @@ export default function router(route='/', data=JSON.parse(localStorage.getItem('
     case '/activate':
       if (!data) return router();
       const queryParams = getQueryParams(window.location.search);
-      // history.pushState('', 'activate', `/activate`);
       handleActivate(data, queryParams);
       break;
 
@@ -47,4 +45,5 @@ export default function router(route='/', data=JSON.parse(localStorage.getItem('
       handleNotFound(data);
       break;
   }
+  addUserSettings();
 };

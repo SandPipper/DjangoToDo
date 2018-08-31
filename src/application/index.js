@@ -15,7 +15,6 @@ mainContainerHandler();
 // trigger router system
 router(window.location.pathname);
 
-
 // actions
 /************************************************************/
 

@@ -7,8 +7,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.utils import timezone
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
 
 
