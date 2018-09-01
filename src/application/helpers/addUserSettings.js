@@ -1,11 +1,10 @@
 // handle user settings
-import user from "./getUser";
+import User from "./getUser";
 
 export default () => {
     const headerLogo = $('#header-logo');
     const userSettings = headerLogo.children('#user-settings');
-    const _user = user();
-    console.log('test-user', _user);
+    const _user = User();
     if (_user) {
         if (userSettings.length) return
         const username = _user.username;

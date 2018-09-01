@@ -1,4 +1,4 @@
-import router from '../router';
+import Router from '../Router';
 import { baseAPIUrl } from '../constants';
 
 export default (data, queryParams) => {
@@ -11,11 +11,11 @@ export default (data, queryParams) => {
       error: function(err) {
         console.log('handle_activate', err);
         window.location.search = '';
-        router();
+        Router.navigate();
       },
       success: function(data) {
         localStorage.setItem('user', JSON.stringify(data));
-        router('/todo');
+        Router.navigate('/todo');
       }
     });
   }

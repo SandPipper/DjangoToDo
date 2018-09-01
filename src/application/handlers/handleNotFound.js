@@ -1,4 +1,4 @@
-export default (user) => {
+export default user => {
   const content = `
     <div>
       <h3>Not found</h3>

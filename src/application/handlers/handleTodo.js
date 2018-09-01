@@ -1,6 +1,6 @@
 import 'daterangepicker';
-import router from '../router';
-import user from '../helpers/getUser';
+import Router from '../Router';
+import User from '../helpers/getUser';
 import todoRepr from '../helpers/todoRepr';
 import categorieRepr from '../helpers/categorieRepr';
 import { baseAPIUrl, csrftoken } from '../constants';
@@ -22,12 +22,12 @@ export default () => {
     type: 'GET',
     url: url,
     headers: {
-        'Authorization': `Token ${user().auth_token}`
+        'Authorization': `Token ${User().auth_token}`
     },
     error: function(err) {
       switch(err.status) {
         case 401:
-          router('/logout');
+          Router.navigate('/logout');
           break;
         case 406:
           console.log(err);
