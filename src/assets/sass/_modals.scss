@@ -6,12 +6,26 @@
   height: 60vh;
   width: 60vw;
   max-width: 100vw;
-  background-color: white !important;
+  background-color: #e5eeff !important;
   transition: all 1s;
   z-index: 1;
   text-align: center;
   z-index: 1;
   border-radius: 10px;
+  .todos-form > #form-todo > #auto-ended-wrap {
+    display: inline-table;
+    width: 83%;
+    text-align: left;
+    #auto-ended {
+      -ms-transform: scale(2);
+      -moz-transform: scale(2);
+      -webkit-transform: scale(2);
+      -o-transform: scale(2);
+    }
+    label {
+      font-size: 1rem;
+    }
+  }
   h2 {
     margin-top: 15vh;
   }

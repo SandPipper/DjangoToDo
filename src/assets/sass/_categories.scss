@@ -1,4 +1,4 @@
-.categorie {
+.category {
   display: flex;
   flex-direction: column;
   max-height: 100px;
@@ -11,7 +11,7 @@
   
 }
 
-.categorie-header {
+.category-header {
   display: flex;
   width: 20%;
   padding: 20px;
@@ -26,13 +26,13 @@
   flex-direction: column;
 }
 
-.categorie-active {
+.category-active {
   // max-width: 60vw;
   max-height: 100vh;
   transition: all 1s;
 }
 
-.categorie-button {
+.category-button {
   // transform: rotate(90deg);
   font-size: 2.5rem;
   display: block;
@@ -60,7 +60,7 @@
   h2 {
     color: rgba(255,0,0,0.8);
   }
-  .categorie-button {
+  .category-button {
     border: 3px solid rgba(255,0,0,0.8);
     .triangle {
       border-top: 20px solid rgba(255,0,0,0.8);
@@ -79,7 +79,7 @@
   h2 {
     color: rgba(252, 208, 50, 0.8);
   }
-  .categorie-button {
+  .category-button {
     border: 3px solid rgba(252, 208, 50, 0.8);
     .triangle {
       border-top: 20px solid rgba(252, 208, 50, 0.8);
@@ -98,7 +98,7 @@
   h2 {
     color: rgba(0,255,0,0.8);
   }
-  .categorie-button {
+  .category-button {
     border: 3px solid rgba(0,255,0,0.8);
     .triangle {
       border-top: 20px solid rgba(0,255,0,0.8);

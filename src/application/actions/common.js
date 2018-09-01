@@ -45,14 +45,14 @@ $(document).on('click', '#resend-activation-email', function() {
   })
 });
 
-$(document).on('click', '.categorie-button', function() {
-  const active = $('.categorie-active');
-  const isSecondClick = $(this).parents('.categorie').hasClass('categorie-active');
+$(document).on('click', '.category-button', function() {
+  const active = $('.category-active');
+  const isSecondClick = $(this).parents('.category').hasClass('category-active');
 
   if (active) {
-    $(active).removeClass('categorie-active');
+    $(active).removeClass('category-active');
   }
   if (!isSecondClick) {
-    $(this).parents('.categorie').addClass('categorie-active');
+    $(this).parents('.category').addClass('category-active');
   }
 });

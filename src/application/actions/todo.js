@@ -1,7 +1,7 @@
 import User from "../helpers/getUser";
 import handleErrors from "../helpers/handleErrors";
 import todoRepr from "../helpers/todoRepr";
-import categorieRepr from "../helpers/categorieRepr";
+import categorieRepr from "../helpers/categoryRepr";
 import { baseAPIUrl } from "../constants";
 import showModalRM from "../helpers/showModalRM";
 

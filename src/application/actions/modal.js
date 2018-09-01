@@ -21,7 +21,7 @@ $(document).on('click', '.todo-edit', function(e) {
   const dateRange = todo.find('h5');
   const dateStart = dateRange[0].innerHTML.split(': ')[1];
   const dateEnd = dateRange[1].innerHTML.split(': ')[1];
-  const categorie = todo.parents('.categorie').find('.categorie-header h2').text();
+  const categorie = todo.parents('.categorie').find('.category-header h2').text();
 
   const data = {
     id,

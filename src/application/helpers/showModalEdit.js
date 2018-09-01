@@ -11,6 +11,10 @@ export default (selector, data, url) => {
           <textarea ud='input-body' name='body' type='text' placeholder='write your todo' value='${data.body}'>${data.body}</textarea>
           <input id='daterpicker-start' name='date_start' type='text' placeholder='Choice start date of todo' value='${data.start_date}' ${isStarted && 'disabled'}>
           <input id='datepicker-end' name='date_end' type='text' placeholder='Choice end date of todo' value='${data.end_date}'>
+          <div id='auto-ended-wrap'>
+            <input id='auto-ended' name='auto_ended' type='checkbox'>
+            <label>Do you need that after date-end is come, your todo move to Ended?</label>
+          </div>   
           <input type='hidden' name='csrfmiddlewaretoken' value='${csrftoken}'>
           <input type='hidden' name='id' value='${data.id}'>
         </form>

@@ -61,7 +61,8 @@ class ToDoSerializer(serializers.ModelSerializer):
         model = ToDo
         fields = (
             'id', 'title', 'body', 'status', 'date_start',
-            'date_end', 'date_created', 'user',
+            'date_end', 'date_created', 'user', 'auto_ended',
+            'completed'
         )
         read_only_fields = ('date_created', 'id')
 
@@ -77,15 +78,21 @@ class ToDoSerializer(serializers.ModelSerializer):
     date_start = serializers.DateField()
     date_end = serializers.DateField()
 
+    auto_ended = serializers.BooleanField()
+    completed = serializers.BooleanField()
+
     user = serializers.PrimaryKeyRelatedField(queryset=ToDoUser.objects.all(), default=serializers.CurrentUserDefault())
 
     _date_now = datetime.date(datetime.now())
 
     def get_status(self, obj):
+        print('test-obj', obj)
         date_now = self._date_now
-        if obj.date_start > date_now:
+        if obj.completed:
+            return ToDo.TYPES[2][0]
+        elif obj.date_start > date_now:
             return ToDo.TYPES[0][0]
-        elif obj.date_start <= date_now and obj.date_end >= date_now:
+        elif not obj.auto_ended or obj.date_start <= date_now and obj.date_end >= date_now:
             return ToDo.TYPES[1][0]
         else:
             return ToDo.TYPES[2][0]

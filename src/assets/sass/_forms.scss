@@ -94,3 +94,18 @@ input:disabled {
   background-color: grey !important;
 }
 
+#form-todo > #auto-ended-wrap {
+  display: flex;
+  #auto-ended {
+    min-width: 0;
+    width: 0;
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    padding: 10px;
+  }
+  label {
+    font-size: 0.9rem;
+  }
+}

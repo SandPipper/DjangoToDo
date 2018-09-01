@@ -2,7 +2,7 @@ import 'daterangepicker';
 import Router from '../Router';
 import User from '../helpers/getUser';
 import todoRepr from '../helpers/todoRepr';
-import categorieRepr from '../helpers/categorieRepr';
+import categoryRepr from '../helpers/categoryRepr';
 import { baseAPIUrl, csrftoken } from '../constants';
 
 export default () => {
@@ -38,7 +38,7 @@ export default () => {
     },
     success: function(data) {
       const todos = todoRepr(data);
-      const categories = categorieRepr(todos);
+      const categories = categoryRepr(todos);
       const content = `
         <div class='todos-container'>
           <div class='todos-header'>
@@ -49,8 +49,12 @@ export default () => {
               <h1>ToDo constructor</h1>
               <form id='form-todo' method='POST' action="${url}" >
                 <input id='input-title' name='title' type='text' placeholder='write status to your todo'>
-                <textarea ud='input-body' name='body' type='text' placeholder='write your todo'></textarea>
+                <textarea id='input-body' name='body' type='text' placeholder='write your todo'></textarea>
                 <input id='daterangepicker' name='date_range' type='text' placeholder='Choice start and end date of todo'>
+                <div id='auto-ended-wrap'>
+                    <input id='auto-ended' name='auto_ended' type='checkbox'>
+                    <label>Do you need that after date-end is come, your todo move to Ended?</label>
+                </div>          
                 <button type='submit'>Submit</button>
                 <input type='hidden' name='csrfmiddlewaretoken' value='${csrftoken}'>
               </form>
