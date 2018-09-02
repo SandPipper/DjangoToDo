@@ -86,7 +86,6 @@ class ToDoSerializer(serializers.ModelSerializer):
     _date_now = datetime.date(datetime.now())
 
     def get_status(self, obj):
-        print('test-obj', obj)
         date_now = self._date_now
         if obj.completed:
             return ToDo.TYPES[2][0]

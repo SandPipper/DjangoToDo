@@ -6,22 +6,26 @@ import showModalEdit from "../helpers/showModalEdit";
 $(document).on('click', '.todo_open', function() {
   const todo = $(this).parent('.todo');
   const text = todo.find('p');
-  text.hasClass('open-todo-body') ? text.removeClass('open-todo-body') : text.addClass('open-todo-body');
-  todo.hasClass('open-todo') ? todo.removeClass('open-todo') : todo.addClass('open-todo');
+  const all = $('header,footer,.todos-header,.todo').not(todo);
+  all.toggleClass('hide');
+  $('body,html').animate({ scrollTop: todo.offset().top / 2 }, 300);
+  text.toggleClass('open-todo-body');
+  todo.toggleClass('open-todo');
 });
 
 $(document).on('click', '.todo-edit', function(e) {
 
-  const todo = $(this).parents('.todo')
+  const todo = $(this).parents('.todo');
   todo.addClass('edit-target');
-
+  // TODO refactor this to Model class
   const id = todo.data('id');
   const title = todo.children('h3').text().trim();
   const body = todo.children('p').text().trim();
   const dateRange = todo.find('h5');
   const dateStart = dateRange[0].innerHTML.split(': ')[1];
   const dateEnd = dateRange[1].innerHTML.split(': ')[1];
-  const categorie = todo.parents('.categorie').find('.category-header h2').text();
+  const auto_ended = !!todo.find('span')[0].innerHTML;
+  const category = todo.parents('.category').find('.category-header h2').text();
 
   const data = {
     id,
@@ -29,7 +33,8 @@ $(document).on('click', '.todo-edit', function(e) {
     body,
     start_date: dateStart,
     end_date: dateEnd,
-    categorie
+    auto_ended,
+    category
   };
 
   const url = baseAPIUrl + '/todo/';
@@ -77,7 +82,7 @@ $(document).on('click', '.button-yes.button-todo-edit', function() {
     },
     success: function(data) {
       const editedTodo = $('.edit-target');
-      editedTodo.children('h3').html('<i class="fa fa-pencil todo-edit" aria-hidden="true"></i>' + data.title);
+      editedTodo.children('h3').html('<i class="fa fa-pencil todo-edit" aria-hidden="true"></i>' + ' ' + data.title);
       editedTodo.children('p').text(data.body);
       const startDate = `Start date: ${data.date_start}`;
       const endDate = `End date: ${data.date_end}`;

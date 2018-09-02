@@ -10,12 +10,14 @@ $(document).on('submit', '#form-todo', function(e) {
     const this_form = this;
     const formData = $(this).serializeArray();
     const date = formData[2].value.split(' - ');
+    const autoEnded = $(this_form).find('#auto-ended');
     const data = {
       csrfmiddlewaretoken: formData[3].value,
       title: formData[0].value,
       body: formData[1].value,
       date_start: date[0],
       date_end: date[1],
+      auto_ended: autoEnded[0].checked
     };
     $.ajax({
         type: $(this).attr('method'),
@@ -41,8 +43,6 @@ $(document).on('submit', '#form-todo', function(e) {
             $('.categories').html(categories);
         },
     });
-
-
 });
 
 $(document).on('click', '.todo_rm', function(e) {
